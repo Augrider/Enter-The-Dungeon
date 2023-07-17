@@ -1,0 +1,16 @@
+{
+    "name": "Game.Plugins.TimeProcess.Components",
+    "rootNamespace": "",
+    "references": [
+        "GUID:9f732e405c6cdb9459972220de6f21bf"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

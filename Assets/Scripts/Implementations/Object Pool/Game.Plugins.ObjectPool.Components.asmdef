@@ -1,0 +1,20 @@
+{
+    "name": "Game.Plugins.ObjectPool.Components",
+    "rootNamespace": "",
+    "references": [
+        "GUID:090ebbd70acf9754fa84dbdf4f4c3779",
+        "GUID:876ce2c51a86fef479341b487a54f2a2",
+        "GUID:98e02c65f9ab133418134bef6a0660df",
+        "GUID:4ee114277d779624bb9f839632d52029",
+        "GUID:8d9865125035cd04a99cadb917a352b4"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

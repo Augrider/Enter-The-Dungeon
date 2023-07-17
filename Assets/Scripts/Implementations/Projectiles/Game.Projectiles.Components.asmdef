@@ -1,0 +1,17 @@
+{
+    "name": "Game.Projectiles.Components",
+    "rootNamespace": "",
+    "references": [
+        "GUID:876ce2c51a86fef479341b487a54f2a2",
+        "GUID:9f732e405c6cdb9459972220de6f21bf"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

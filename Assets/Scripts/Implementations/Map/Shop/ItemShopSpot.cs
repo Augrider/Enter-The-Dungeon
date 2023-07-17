@@ -1,0 +1,104 @@
+using Game.Common;
+using Game.Items;
+using Game.Items.Components;
+using Game.Player;
+using TMPro;
+using UnityEngine;
+
+namespace Game.Map.Components
+{
+    public class ItemShopSpot : MonoBehaviour, IInteractable
+    {
+        [SerializeField] private Transform _itemPlacement;
+        [SerializeField] private Vector3 _dropOffset;
+
+        [SerializeField] private TextMeshProUGUI _priceTextObject;
+
+        private Item _current;
+        private int _price;
+
+        public bool ItemPlaced { get; private set; }
+        public IItem Item { get => _current; }
+
+        public bool Enabled { get => enabled; set => ToggleEnabled(value); }
+        public Vector3 Position => transform.position;
+
+
+        void Start()
+        {
+            Debug.Log($"Enabled {Enabled}");
+        }
+
+
+        public void Interact(IPlayer player)
+        {
+            if (player.Inventory.Currency < _price)
+                return;
+
+            player.Inventory.Currency -= _price;
+            player.Inventory.PickItem(_current);
+
+            _current = null;
+            ItemPlaced = false;
+
+            ToggleEnabled(false);
+        }
+
+        public void ToggleHighlight(bool value)
+        {
+            //Do some highlight
+        }
+
+
+        internal void PlaceItem(IItem item, int price)
+        {
+            if (ItemPlaced)
+                DropItem();
+
+            ItemPlaced = true;
+            _current = item as Item;
+
+            _current.Enabled = false;
+            enabled = true;
+
+            _current.SetPosition(_itemPlacement, _itemPlacement.position, _itemPlacement.rotation);
+            _current.TogglePhysics(false);
+
+            SetPriceTag(price);
+        }
+
+        internal void DropItem()
+        {
+            _current.Enabled = true;
+            enabled = false;
+
+            _current.SetPosition(_itemPlacement.position + _dropOffset, _itemPlacement.rotation);
+            _current.TogglePhysics(true);
+
+            ItemPlaced = false;
+        }
+
+
+
+        private void ToggleEnabled(bool value)
+        {
+            enabled = value;
+            _priceTextObject.enabled = value;
+
+            ToggleHighlight(false);
+
+            if (!value && ItemPlaced)
+                DropItem();
+        }
+
+        private void SetPriceTag(int value)
+        {
+            _price = value;
+
+            if (_price > 0)
+                _priceTextObject.SetText($"{value} $");
+            else
+                _priceTextObject.SetText("Free");
+        }
+    }
+}

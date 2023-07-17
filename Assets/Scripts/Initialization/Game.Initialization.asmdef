@@ -1,0 +1,20 @@
+{
+    "name": "Game.Initialization",
+    "rootNamespace": "",
+    "references": [
+        "GUID:876ce2c51a86fef479341b487a54f2a2",
+        "GUID:f1c2593b909f1204688cb0c9846092dd",
+        "GUID:0d57ec7d63d1c3f4f8058fc50955a798",
+        "GUID:1427bf01596ff8c4fa2448fff2c0f473",
+        "GUID:98e02c65f9ab133418134bef6a0660df"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

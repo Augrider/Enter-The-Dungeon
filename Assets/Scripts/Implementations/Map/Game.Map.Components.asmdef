@@ -1,0 +1,22 @@
+{
+    "name": "Game.Map.Components",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:876ce2c51a86fef479341b487a54f2a2",
+        "GUID:0d57ec7d63d1c3f4f8058fc50955a798",
+        "GUID:f2ecaf353f66e8149b2d0d3781bd7f61",
+        "GUID:4ee114277d779624bb9f839632d52029",
+        "GUID:98e02c65f9ab133418134bef6a0660df",
+        "GUID:090ebbd70acf9754fa84dbdf4f4c3779"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
