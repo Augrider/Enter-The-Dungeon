@@ -12,12 +12,6 @@ namespace Game.Projectiles.Components
         [SerializeField] private float _lifetime;
 
 
-        private void OnDisable()
-        {
-            SetDestroyedState();
-        }
-
-
         protected override void SetActiveState()
         {
             StopAllCoroutines();

@@ -13,7 +13,11 @@ namespace Game.Enemies.Components
         [SerializeField] private float _playerCloseRange;
         [SerializeField] private float _playerFarRange;
 
+        [SerializeField] private UnityEvent ObjectEnabled;
+        [SerializeField] private UnityEvent ObjectDisabled;
+
         [SerializeField] private MovementEvents _movementEvents;
+
 
         private bool _currentVisual;
 
@@ -24,6 +28,17 @@ namespace Game.Enemies.Components
 
         private Vector3 PlayerPosition => Players.Current.UnitState.Position;
         private float SqrDistance => (PlayerUnit.State.Position - transform.position).sqrMagnitude;
+
+
+        private void OnEnable()
+        {
+            ObjectEnabled?.Invoke();
+        }
+
+        private void OnDisable()
+        {
+            ObjectDisabled?.Invoke();
+        }
 
 
         void LateUpdate()

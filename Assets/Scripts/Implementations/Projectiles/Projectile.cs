@@ -9,6 +9,12 @@ namespace Game.Projectiles.Components
         public ProjectileState ProjectileState { get; private set; } = ProjectileState.Idle;
 
 
+        protected void OnDisable()
+        {
+            SetProjectileState(ProjectileState.Destroyed);
+        }
+
+
         public void SetProjectileState(ProjectileState value)
         {
             ProjectileState = value;

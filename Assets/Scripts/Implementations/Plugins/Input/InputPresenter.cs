@@ -39,7 +39,7 @@ namespace Game.Plugins.Input
 
         private void Update()
         {
-            SetPointer(Mouse.current.position.value);
+            SetPointer(Mouse.current.position.ReadValue());
         }
 
 
