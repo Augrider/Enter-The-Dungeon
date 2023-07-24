@@ -1,5 +1,4 @@
 using System.Collections;
-using Game.Plugins.TimeProcesses;
 using UnityEngine;
 
 namespace Game.Projectiles.Components
@@ -11,11 +10,34 @@ namespace Game.Projectiles.Components
 
         [SerializeField] private float _lifetime;
 
+        bool _paused;
+        private Vector3 _speed;
+
+
+        public override void TogglePause(bool value)
+        {
+            if (_paused == value)
+                return;
+
+            _paused = value;
+
+            if (value)
+            {
+                _speed = _rigidbody.velocity;
+                _rigidbody.isKinematic = true;
+            }
+            else
+            {
+                _rigidbody.isKinematic = false;
+                _rigidbody.velocity = _speed;
+            }
+        }
+
 
         protected override void SetActiveState()
         {
             StopAllCoroutines();
-            StartCoroutine(MoveProcess());
+            StartCoroutine(MoveProcess(_projectileSpeed * transform.forward));
         }
 
         protected override void SetDestroyedState()
@@ -33,16 +55,16 @@ namespace Game.Projectiles.Components
         }
 
 
-
-        private IEnumerator MoveProcess()
+        private IEnumerator MoveProcess(Vector3 speed)
         {
             var time = 0f;
 
-            _rigidbody.AddForce(_projectileSpeed * transform.forward, ForceMode.VelocityChange);
+            _rigidbody.velocity = speed;
 
             while (time < _lifetime)
             {
-                time += Time.fixedDeltaTime;
+                if (!_paused)
+                    time += Time.fixedDeltaTime;
 
                 yield return new WaitForFixedUpdate();
             }

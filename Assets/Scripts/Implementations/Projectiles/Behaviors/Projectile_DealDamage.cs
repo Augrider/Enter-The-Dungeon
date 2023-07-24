@@ -13,7 +13,6 @@ namespace Game.Projectiles.Components
 
         void OnTriggerEnter(Collider other)
         {
-            Debug.Log($"Collision in state {Projectile.ProjectileState}");
             if (Projectile.ProjectileState != ProjectileState.Active)
                 return;
 

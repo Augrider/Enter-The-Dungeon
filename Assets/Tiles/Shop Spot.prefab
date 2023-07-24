@@ -257,6 +257,7 @@ GameObject:
   - component: {fileID: 7313138830214518309}
   - component: {fileID: 7313138830214518310}
   - component: {fileID: 7640227073941235794}
+  - component: {fileID: -5144315894196696706}
   m_Layer: 11
   m_Name: Shop Spot
   m_TagString: Untagged
@@ -296,6 +297,21 @@ MonoBehaviour:
   _itemPlacement: {fileID: 7313138829496823382}
   _dropOffset: {x: 0, y: 1, z: 2}
   _priceTextObject: {fileID: 7313138830095743648}
+  HighlightToggled:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -5144315894196696706}
+        m_TargetAssemblyTypeName: Game.UI.HUD.TooltipComponent, Game.UI.HUD
+        m_MethodName: ToggleTooltip
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &7640227073941235794
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -309,6 +325,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.5, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-5144315894196696706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7313138830214518311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec322e3421fa0741a7c9409fa982f6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipText: Buy Item
 --- !u!1 &7313138830267178765
 GameObject:
   m_ObjectHideFlags: 0

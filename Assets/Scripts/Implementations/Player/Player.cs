@@ -1,3 +1,4 @@
+using System.Collections;
 using Game.Units;
 using UnityEngine;
 
@@ -45,20 +46,26 @@ namespace Game.Player.Components
 
         void Awake()
         {
-            Players.Provide(this);
-
             Unit.State.MaxHealth = Stats.MaxHealth;
             Unit.State.Health = Stats.MaxHealth;
+        }
+
+        IEnumerator Start()
+        {
+            yield return null;
+            PlayerEvents.InvokePlayerSpawned(this);
         }
 
 
         void OnEnable()
         {
             Players.Provide(this);
+            PlayerEvents.InvokePlayerSpawned(this);
         }
 
         void OnDisable()
         {
+            PlayerEvents.InvokePlayerDied(this);
             Players.Provide(null);
         }
     }

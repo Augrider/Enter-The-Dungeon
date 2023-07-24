@@ -1,3 +1,4 @@
+using Game.State;
 using UnityEngine;
 
 namespace Game.Enemies.Components
@@ -19,6 +20,9 @@ namespace Game.Enemies.Components
 
         void Update()
         {
+            if (GameStateLocator.Service.Paused)
+                return;
+
             if (!IsPlayerAlive)
                 return;
 

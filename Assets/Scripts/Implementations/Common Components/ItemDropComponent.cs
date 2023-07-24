@@ -23,7 +23,7 @@ namespace Game.Items.Components
             if (roll <= probability)
             {
                 var position = GetDropPosition(transform.position);
-                CreateItem(_items.GetRandomPrefab(), position, Random.rotationUniform);
+                CreateItem(_items.GetRandomPrefab(), position, Quaternion.identity);
             }
         }
 
@@ -34,16 +34,17 @@ namespace Game.Items.Components
             for (int i = 0; i < amount; i++)
             {
                 var position = GetDropPosition(transform.position);
-                CreateItem(_items.GetRandomPrefab(), position, Random.rotationUniform);
+                CreateItem(_items.GetRandomPrefab(), position, Quaternion.identity);
             }
         }
 
+        [ContextMenu("Drop all Items")]
         public void DropAllItems()
         {
             for (int i = 0; i < _items.Count; i++)
             {
                 var position = GetDropPosition(transform.position);
-                CreateItem(_items.GetPrefab(i), position, Random.rotationUniform);
+                CreateItem(_items.GetPrefab(i), position, Quaternion.identity);
             }
         }
 

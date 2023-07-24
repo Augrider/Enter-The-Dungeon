@@ -22,6 +22,17 @@ namespace Game.Units.Components
         }
 
 
+        public void SetPaused()
+        {
+            _navMeshAgent.isStopped = true;
+        }
+
+        public void SetResumed()
+        {
+            _navMeshAgent.isStopped = false;
+        }
+
+
         public void SetDestination(Vector3 target)
         {
             if (!_navMeshAgent.enabled || !_navMeshAgent.isOnNavMesh)

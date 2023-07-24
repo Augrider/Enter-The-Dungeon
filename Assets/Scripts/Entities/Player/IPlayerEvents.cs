@@ -8,7 +8,6 @@ namespace Game.Player
     public interface IPlayerEvents
     {
         event Action<int> HealthChanged;
-        event Action PlayerDied;
 
         event Action InventoryChanged;
 

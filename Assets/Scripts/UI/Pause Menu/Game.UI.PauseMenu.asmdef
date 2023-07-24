@@ -1,0 +1,16 @@
+{
+    "name": "Game.UI.PauseMenu",
+    "rootNamespace": "",
+    "references": [
+        "GUID:876ce2c51a86fef479341b487a54f2a2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

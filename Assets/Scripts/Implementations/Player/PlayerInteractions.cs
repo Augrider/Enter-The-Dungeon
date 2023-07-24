@@ -19,7 +19,7 @@ namespace Game.Player.Components
                 return;
 
             _interactables.Add(component);
-            RefreshHighlight();
+            // RefreshHighlight();
         }
 
         void OnTriggerExit(Collider other)
@@ -28,25 +28,30 @@ namespace Game.Player.Components
                 return;
 
             _interactables.Remove(component);
-            RefreshHighlight();
+            // RefreshHighlight();
         }
 
+
+        private void LateUpdate()
+        {
+            RefreshHighlight();
+        }
 
         //Optionally add late update for highlight refresh
 
 
         public bool TryInteractWith(IInteractable interactable)
         {
-            if (!interactable.Enabled)
-            {
-                RefreshHighlight();
-                return false;
-            }
+            // if (!interactable.Enabled)
+            // {
+            //     RefreshHighlight();
+            //     return false;
+            // }
 
             Debug.Log($"Interacting with {interactable}");
 
-            if (_interactables.Contains(interactable))
-                _interactables.Remove(interactable);
+            // if (_interactables.Contains(interactable))
+            //     _interactables.Remove(interactable);
 
             interactable.Interact(Player);
 
@@ -67,7 +72,8 @@ namespace Game.Player.Components
             }
 
             SetNewInteractable(interactables.First());
-            Debug.Log($"New selectable {_currentHighlighted}");
+
+            _interactables.RemoveAll(t => !t.Enabled);
         }
 
         private float GetSqrDistance(IInteractable interactable)
@@ -77,8 +83,13 @@ namespace Game.Player.Components
 
         private void SetNewInteractable(IInteractable interactable)
         {
+            if (interactable == _currentHighlighted)
+                return;
+
+            Debug.LogWarning($"Disabling tooltip from {_currentHighlighted}");
             _currentHighlighted?.ToggleHighlight(false);
             _currentHighlighted = interactable;
+            Debug.LogWarning($"Enabling tooltip from {_currentHighlighted}");
             _currentHighlighted?.ToggleHighlight(true);
         }
     }

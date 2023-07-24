@@ -158,9 +158,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unit: {fileID: 8763736472888682362}
-  _speedChanged:
-    m_PersistentCalls:
-      m_Calls: []
   _rigidbody: {fileID: 8763736472888682360}
   _rotationSpeed: 300
 --- !u!1 &8763736472888682359
@@ -177,6 +174,7 @@ GameObject:
   - component: {fileID: 8763736472888682362}
   - component: {fileID: 8763736472888682357}
   - component: {fileID: 8763736472888682356}
+  - component: {fileID: 8454945736753853407}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -275,6 +273,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _unit: {fileID: 8763736472888682362}
   _immunityCooldown: 0.5
+  UnitSpawned:
+    m_PersistentCalls:
+      m_Calls: []
   HealthChanged:
     m_PersistentCalls:
       m_Calls:
@@ -292,10 +293,38 @@ MonoBehaviour:
         m_CallState: 2
   UnitDied:
     m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &8454945736753853407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8763736472888682359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a801c1cb30bb618439a8106832c64be5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Paused:
+    m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8763736473387217127}
-        m_TargetAssemblyTypeName: Game.Player.Components.PlayerEvents, Game.Player.Components
-        m_MethodName: InvokePlayerDied
+      - m_Target: {fileID: 8763736473387217117}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8763736472701766923}
+        m_TargetAssemblyTypeName: Game.Units.Components.RigidbodyMovementComponent,
+          Game.Units.Components
+        m_MethodName: SetPaused
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -304,6 +333,34 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+  Resumed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8763736473387217117}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 8763736472701766923}
+        m_TargetAssemblyTypeName: Game.Units.Components.RigidbodyMovementComponent,
+          Game.Units.Components
+        m_MethodName: SetResumed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!1 &8763736472909319961
 GameObject:
@@ -443,7 +500,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8763736473387217119}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f8d178d34b6c5e45bad08089d944e06, type: 3}
   m_Name: 

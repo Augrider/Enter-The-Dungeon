@@ -25,7 +25,7 @@ namespace Game.Plugins.ObjectPool
         }
 
 
-        public IItem GetItem(Item item)
+        public Item GetItem(Item item)
         {
             return _itemsPool.GetNew(item);
         }
@@ -40,7 +40,7 @@ namespace Game.Plugins.ObjectPool
             return result;
         }
 
-        public IUnit GetUnit(Unit unit)
+        public Unit GetUnit(Unit unit)
         {
             return _unitPool.GetNew(unit);
         }

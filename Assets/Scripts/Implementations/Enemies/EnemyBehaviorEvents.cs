@@ -1,4 +1,6 @@
+using System;
 using Game.Player;
+using Game.State;
 using Game.Units;
 using Game.Units.Components;
 using UnityEngine;
@@ -8,6 +10,8 @@ namespace Game.Enemies.Components
 {
     public class EnemyBehaviorEvents : MonoBehaviour
     {
+        private enum State { Normal, Far, Close, NoVisual }
+
         [SerializeField] protected LineOfSight _lineOfSight;
 
         [SerializeField] private float _playerCloseRange;
@@ -16,12 +20,11 @@ namespace Game.Enemies.Components
         [SerializeField] private UnityEvent ObjectEnabled;
         [SerializeField] private UnityEvent ObjectDisabled;
 
-        [SerializeField] private MovementEvents _movementEvents;
+        [SerializeField] private EnemyStateEvents _stateEvents;
 
+        private State _currentState;
 
-        private bool _currentVisual;
-
-        public bool GotPlayerVisual => _currentVisual;
+        public bool GotPlayerVisual { get; private set; }
 
         private IUnit PlayerUnit => Players.Current?.Unit;
         private bool IsPlayerAlive => Players.IsCurrentAlive;
@@ -47,18 +50,68 @@ namespace Game.Enemies.Components
             //Define which are useless later
             //For too close and too far events ranges needed
 
+            if (GameStateLocator.Service.Paused)
+                return;
+
             bool visual = CheckPlayerVisual();
             SetCurrentVisual(visual);
-
 
             if (!IsPlayerAlive)
                 return;
 
+            switch (_currentState)
+            {
+                // case State.NoVisual:
+                //     OnNoVisual();
+                //     return;
+
+                case State.Close:
+                    OnClose();
+                    return;
+
+                case State.Far:
+                    OnFar();
+                    return;
+
+                case State.Normal:
+                    OnNormal();
+                    return;
+            }
+        }
+
+
+        private void OnNormal()
+        {
             if (CheckPlayerClose(_playerCloseRange))
-                _movementEvents.PlayerClose?.Invoke();
+            {
+                _stateEvents.PlayerClose?.Invoke();
+                _currentState = State.Close;
+                return;
+            }
 
             if (CheckPlayerFar(_playerFarRange))
-                _movementEvents.PlayerFar?.Invoke();
+            {
+                _stateEvents.PlayerFar?.Invoke();
+                _currentState = State.Far;
+            }
+        }
+
+        private void OnFar()
+        {
+            if (!CheckPlayerFar(_playerFarRange))
+                _currentState = State.Normal;
+        }
+
+        private void OnClose()
+        {
+            if (!CheckPlayerClose(_playerCloseRange))
+                _currentState = State.Normal;
+        }
+
+        private void OnNoVisual()
+        {
+            if (GotPlayerVisual)
+                _currentState = State.Normal;
         }
 
 
@@ -74,21 +127,27 @@ namespace Game.Enemies.Components
 
         private void SetCurrentVisual(bool visual)
         {
-            if (_currentVisual != visual)
+            if (GotPlayerVisual != visual)
             {
-                _currentVisual = visual;
+                GotPlayerVisual = visual;
 
-                if (_currentVisual)
-                    _movementEvents.RegainedPlayerVisual?.Invoke();
+                if (GotPlayerVisual)
+                {
+                    _stateEvents.RegainedPlayerVisual?.Invoke();
+                    _currentState = State.Normal;
+                }
                 else
-                    _movementEvents.LostPlayerVisual?.Invoke();
+                {
+                    _stateEvents.LostPlayerVisual?.Invoke();
+                    _currentState = State.NoVisual;
+                }
             }
         }
 
 
 
         [System.Serializable]
-        private struct MovementEvents
+        private struct EnemyStateEvents
         {
             public UnityEvent PlayerClose;
             public UnityEvent PlayerFar;

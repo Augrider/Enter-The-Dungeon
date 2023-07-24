@@ -129,6 +129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3992300734553989063}
+  - component: {fileID: 2396390504374038365}
   m_Layer: 7
   m_Name: Enemy_Turret
   m_TagString: Untagged
@@ -153,6 +154,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2396390504374038365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 998278537898765116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a801c1cb30bb618439a8106832c64be5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Paused:
+    m_PersistentCalls:
+      m_Calls: []
+  Resumed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2645697337099535680
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,6 +264,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2735588207087675537}
   - component: {fileID: 2656817669401263450}
+  - component: {fileID: 8578179825393170417}
   m_Layer: 7
   m_Name: Components
   m_TagString: Untagged
@@ -278,14 +298,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5caaa8e2252606449e31bf7105f2d82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _unit: {fileID: 0}
   _obstacleMask:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 2176
   _maxRange: 200
   _castOffset: {x: 0, y: 0, z: 0}
   _visionSphereRadius: 0.1
   _sphereCastRangeMultiplier: 1
+--- !u!114 &8578179825393170417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3207118355075557326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82f530fcbf4665f43975417a998270ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4556087307204947863
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,9 +430,24 @@ MonoBehaviour:
   HealthChanged:
     m_PersistentCalls:
       m_Calls: []
-  ObjectDied:
+  ReceivedDamage:
     m_PersistentCalls:
       m_Calls: []
+  ObjectDied:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8578179825393170417}
+        m_TargetAssemblyTypeName: Game.State.Components.OnEnemyKilledComponent, Game.State.Components
+        m_MethodName: OnKilled
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7298779001410570058
 GameObject:
   m_ObjectHideFlags: 0
@@ -449,7 +495,13 @@ MonoBehaviour:
   _lineOfSight: {fileID: 2656817669401263450}
   _playerCloseRange: 1
   _playerFarRange: 2
-  _movementEvents:
+  ObjectEnabled:
+    m_PersistentCalls:
+      m_Calls: []
+  ObjectDisabled:
+    m_PersistentCalls:
+      m_Calls: []
+  _stateEvents:
     PlayerClose:
       m_PersistentCalls:
         m_Calls: []
@@ -471,6 +523,9 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+    RegainedPlayerVisual:
+      m_PersistentCalls:
+        m_Calls:
         - m_Target: {fileID: 8819994062911090687}
           m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
           m_MethodName: set_enabled
@@ -483,10 +538,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-    RegainedPlayerVisual:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 7298779001410570058}
+        - m_Target: {fileID: 360923527339875270}
           m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_MethodName: SetActive
           m_Mode: 6

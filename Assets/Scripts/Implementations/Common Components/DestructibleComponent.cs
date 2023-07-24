@@ -13,6 +13,7 @@ namespace Game.Common
         [SerializeField] private float _immunityCooldown;
 
         [SerializeField] private UnityEvent<int> HealthChanged;
+        [SerializeField] private UnityEvent<int> ReceivedDamage;
         [SerializeField] private UnityEvent ObjectDied;
 
         private bool _immune;
@@ -20,17 +21,26 @@ namespace Game.Common
         public bool Immune => _immune;
 
 
-        public void DealDamage(int value)
+        public void SetHealth(int value)
         {
-            _health -= value;
+            // if (_health == value)
+            //     return;
+
+            _health = value;
             HealthChanged?.Invoke(_health);
 
             if (_health <= 0)
             {
                 ObjectDied?.Invoke();
-                Destroy(_object);
+                _object.SetActive(false);
                 return;
             }
+        }
+
+        public void DealDamage(int value)
+        {
+            SetHealth(_health - value);
+            ReceivedDamage?.Invoke(value);
 
             if (_immunityCooldown > 0)
                 StartCoroutine(ImmunityProcess());

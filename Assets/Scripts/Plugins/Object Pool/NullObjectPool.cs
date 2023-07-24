@@ -9,7 +9,7 @@ namespace Game.Plugins.ObjectPool
 {
     public class NullObjectPool : IObjectPool
     {
-        public IItem GetItem(Item item)
+        public Item GetItem(Item item)
         {
             throw new System.NotImplementedException();
         }
@@ -19,7 +19,7 @@ namespace Game.Plugins.ObjectPool
             throw new System.NotImplementedException();
         }
 
-        public IUnit GetUnit(Unit unit)
+        public Unit GetUnit(Unit unit)
         {
             throw new System.NotImplementedException();
         }

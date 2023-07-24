@@ -9,6 +9,7 @@ namespace Game.Units.Components
     {
         [SerializeField] private float _immunityCooldown;
 
+        [SerializeField] private UnityEvent UnitSpawned;
         [SerializeField] private UnityEvent<int> HealthChanged;
         [SerializeField] private UnityEvent UnitDied;
 
@@ -22,6 +23,8 @@ namespace Game.Units.Components
         {
             Unit.StateChanged += OnStateChanged;
             _health = Unit.State.Health;
+
+            UnitSpawned?.Invoke();
         }
 
         void OnDisable()

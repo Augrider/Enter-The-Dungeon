@@ -2,8 +2,10 @@ using UnityEngine;
 
 namespace Game.Controller.Missions
 {
-    public class MissionObjective : MonoBehaviour
+    internal class MissionObjective : MonoBehaviour
     {
+        public static event System.Action<ObjectiveType> Completed;
+
         [SerializeField] private ObjectiveType _objectiveType;
 
 
@@ -15,7 +17,7 @@ namespace Game.Controller.Missions
         /// </remarks>
         public void Complete()
         {
-            MissionController.CompleteObjective(_objectiveType);
+            Completed?.Invoke(_objectiveType);
         }
     }
 }

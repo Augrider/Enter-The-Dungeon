@@ -4,6 +4,7 @@ using Game.Items.Components;
 using Game.Player;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Game.Map.Components
 {
@@ -13,6 +14,8 @@ namespace Game.Map.Components
         [SerializeField] private Vector3 _dropOffset;
 
         [SerializeField] private TextMeshProUGUI _priceTextObject;
+
+        [SerializeField] private UnityEvent<bool> HighlightToggled;
 
         private Item _current;
         private int _price;
@@ -36,7 +39,7 @@ namespace Game.Map.Components
                 return;
 
             player.Inventory.Currency -= _price;
-            player.Inventory.PickItem(_current);
+            player.Interactions.TryInteractWith(_current);
 
             _current = null;
             ItemPlaced = false;
@@ -46,7 +49,7 @@ namespace Game.Map.Components
 
         public void ToggleHighlight(bool value)
         {
-            //Do some highlight
+            HighlightToggled?.Invoke(value);
         }
 
 

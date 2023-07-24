@@ -14,6 +14,19 @@ namespace Game.Items.Components
         }
 
 
+        public override void Interact(IPlayer player)
+        {
+            if (player.Weapons.TryGetWeapon(ID, out var weapon))
+            {
+                weapon.State.TotalAmmo = weapon.Stats.MaxAmmo;
+                Destroy();
+                return;
+            }
+
+            base.Interact(player);
+        }
+
+
         protected override void OnItemPicked(IPlayer player)
         {
             TogglePhysics(false);

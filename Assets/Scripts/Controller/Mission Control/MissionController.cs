@@ -5,33 +5,44 @@ namespace Game.Controller.Missions
 {
     public class MissionController : MonoBehaviour
     {
-        public static event System.Action<ObjectiveType> ObjectiveUpdated;
-        public event System.Action MissionUpdated;
+        public static event System.Action<MissionController> MissionUpdated;
+
         [SerializeField] private UnityEvent _missionComplete;
 
         [SerializeField] private ObjectiveType _objectiveType;
+        [SerializeField, Multiline] private string _description;
         [SerializeField] private int _objectiveCount;
         private int _completedCount = 0;
 
-        public bool Completed { get; private set; }
-        public int MissionTarget => _objectiveCount;
+        public ObjectiveType ObjectiveType => _objectiveType;
+        public string Description => _description;
+
         public int CompletedCount => _completedCount;
+        public int MissionTarget => _objectiveCount;
+
+        public bool Completed { get; private set; }
 
 
         void Awake()
         {
-            ObjectiveUpdated += OnObjectiveCompleted;
+            MissionObjective.Completed += OnObjectiveCompleted;
         }
+
+        //Used for initial status update
+        private void Start()
+        {
+            MissionUpdated?.Invoke(this);
+        }
+
 
         void OnDestroy()
         {
-            ObjectiveUpdated -= OnObjectiveCompleted;
+            MissionObjective.Completed -= OnObjectiveCompleted;
         }
 
 
         [ContextMenu("Complete Objective")]
-        public void CompleteObjective() => CompleteObjective(_objectiveType);
-        public static void CompleteObjective(ObjectiveType objectiveType) => ObjectiveUpdated?.Invoke(objectiveType);
+        public void CompleteObjective() => OnObjectiveCompleted(_objectiveType);
 
 
 
@@ -41,7 +52,7 @@ namespace Game.Controller.Missions
                 return;
 
             _completedCount++;
-            MissionUpdated?.Invoke();
+            MissionUpdated?.Invoke(this);
 
             if (CompletedCount >= MissionTarget)
             {

@@ -1,6 +1,7 @@
 using Game.Common;
 using Game.Player;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Game.Items.Components
 {
@@ -12,6 +13,9 @@ namespace Game.Items.Components
         [Space]
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private Collider _collider;
+
+        [Space]
+        [SerializeField] private UnityEvent<bool> HighlightToggled;
 
         public Transform DefaultParent { get; set; }
 
@@ -25,11 +29,12 @@ namespace Game.Items.Components
 
         public void ToggleHighlight(bool value)
         {
-            Debug.Log($"Highlight enabled {value}");
+            HighlightToggled?.Invoke(value);
         }
 
-        public void Interact(IPlayer player)
+        public virtual void Interact(IPlayer player)
         {
+            // enabled = false;
             player.Inventory.PickItem(this);
         }
 
@@ -56,8 +61,12 @@ namespace Game.Items.Components
             _collider.enabled = value;
         }
 
+        /// <summary>
+        /// Removes item instance from game
+        /// </summary>
         public void Destroy()
         {
+            enabled = false;
             gameObject.SetActive(false);
         }
 
@@ -65,12 +74,14 @@ namespace Game.Items.Components
         void IItem.OnItemPicked(IPlayer player)
         {
             //Common logic
+            enabled = false;
             OnItemPicked(player);
         }
 
         void IItem.OnItemDropped(IPlayer player)
         {
             //Common logic
+            enabled = true;
             OnItemDropped(player);
         }
 

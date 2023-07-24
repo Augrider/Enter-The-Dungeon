@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using Game.Player;
+using Game.Player.Components;
 using Game.State;
 using UnityEngine;
 
@@ -9,8 +9,15 @@ namespace Game.Map.Components
     {
         public void ToNextLevel()
         {
-            GameStateLocator.Service.SavePlayerState();
-            GameStateLocator.Service.GoToLevel(GameStateLocator.Service.Level + 1);
+            if (GameStateLocator.Service.Level + 1 >= GameStateLocator.Service.Control.LevelCount)
+            {
+                //TODO: Proper ending
+                PlayerEvents.InvokePlayerDied(Players.Current);
+                return;
+            }
+
+            GameStateLocator.Service.Control.SavePlayerState();
+            GameStateLocator.Service.Control.GoToLevel(GameStateLocator.Service.Level + 1);
         }
     }
 }

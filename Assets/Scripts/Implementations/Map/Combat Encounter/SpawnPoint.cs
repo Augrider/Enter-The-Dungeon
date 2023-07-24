@@ -11,10 +11,10 @@ namespace Game.Map.Components
     {
         [SerializeField] private Unit _unitPrefab;
         [SerializeField] private float _spawnDelay;
-        private IUnit _unit;
+        private Unit _unit;
 
-        [SerializeField] private UnityEvent _unitSpawned;
-        [SerializeField] private UnityEvent _unitDied;
+        [SerializeField] private UnityEvent<Unit> _unitSpawned;
+        [SerializeField] private UnityEvent<Unit> _unitDied;
 
         public bool IsAlive => _unit != null ? _unit.State.Health > 0 : false;
 
@@ -41,7 +41,7 @@ namespace Game.Map.Components
             _unit = null;
 
             UnitDied?.Invoke();
-            _unitDied?.Invoke();
+            _unitDied?.Invoke(_unit);
         }
 
 
@@ -60,7 +60,7 @@ namespace Game.Map.Components
             _unit.State.Rotation = transform.rotation;
 
             UnitSpawned?.Invoke();
-            _unitSpawned?.Invoke();
+            _unitSpawned?.Invoke(_unit);
 
             _unit.StateChanged += OnUnitStateChanged;
         }

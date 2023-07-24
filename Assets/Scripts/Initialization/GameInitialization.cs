@@ -19,7 +19,7 @@ namespace Game.Initialization
         {
             yield return new WaitForSeconds(0.5f);
 
-            GameStateLocator.Service.GoToLevel(0);
+            GameStateLocator.Service.Control.ToMainMenu();
         }
     }
 }

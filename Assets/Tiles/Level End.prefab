@@ -44,6 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e0c1035d7bf2144799888c935048a5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactOnce: 1
+  _disableOnPlayerNearby: 0
+  _disableOnPlayerLeft: 0
   _playerNearby:
     m_PersistentCalls:
       m_Calls: []
@@ -67,7 +70,19 @@ MonoBehaviour:
         m_CallState: 2
   _toggleTooltip:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -2962750434044710982}
+        m_TargetAssemblyTypeName: Game.UI.HUD.TooltipComponent, Game.UI.HUD
+        m_MethodName: ToggleTooltip
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!65 &7894291220029168902
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -91,6 +106,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3292119430730415263}
   - component: {fileID: 2081707120905613918}
+  - component: {fileID: -2962750434044710982}
   m_Layer: 11
   m_Name: Level End
   m_TagString: Untagged
@@ -125,3 +141,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7db849edd02179947bb29a2558fb9274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-2962750434044710982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7416310935912535480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec322e3421fa0741a7c9409fa982f6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipText: Go To Next Level

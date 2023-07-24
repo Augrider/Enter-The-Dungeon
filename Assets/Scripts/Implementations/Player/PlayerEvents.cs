@@ -5,8 +5,10 @@ namespace Game.Player.Components
 {
     public class PlayerEvents : MonoBehaviour, IPlayerEvents
     {
+        public static event Action<IPlayer> PlayerSpawned;
+        public static event Action<IPlayer> PlayerDied;
+
         public event Action<int> HealthChanged;
-        public event Action PlayerDied;
 
         public event Action InventoryChanged;
 
@@ -14,8 +16,11 @@ namespace Game.Player.Components
         public event Action WeaponSwitched;
         public event Action WeaponReloaded;
 
+
+        public static void InvokePlayerSpawned(IPlayer player) => PlayerSpawned?.Invoke(player);
+        public static void InvokePlayerDied(IPlayer player) => PlayerDied?.Invoke(player);
+
         public void InvokeHealthChanged(int value) => HealthChanged?.Invoke(value);
-        public void InvokePlayerDied() => PlayerDied?.Invoke();
 
         public void InvokeInventoryChanged() => InventoryChanged?.Invoke();
 

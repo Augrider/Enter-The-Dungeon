@@ -345,6 +345,7 @@ GameObject:
   - component: {fileID: 6112331347960075380}
   - component: {fileID: 6112331347960075382}
   - component: {fileID: 6112331347960075379}
+  - component: {fileID: -2653140896410003220}
   m_Layer: 10
   m_Name: Weapon_Shotgun
   m_TagString: Untagged
@@ -477,6 +478,21 @@ MonoBehaviour:
     ItemType: 1
   _rigidbody: {fileID: 6112331347960075383}
   _collider: {fileID: 6112331347960075380}
+  HighlightToggled:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: -2653140896410003220}
+        m_TargetAssemblyTypeName: Game.UI.HUD.TooltipComponent, Game.UI.HUD
+        m_MethodName: ToggleTooltip
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &6112331347960075379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,6 +506,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _visuals: {fileID: 6112331347446499381}
+--- !u!114 &-2653140896410003220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6112331347960075381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec322e3421fa0741a7c9409fa982f6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipText: Pick Shotgun
 --- !u!1 &9097155867869691286
 GameObject:
   m_ObjectHideFlags: 0

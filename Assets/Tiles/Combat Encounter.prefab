@@ -44,6 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e0c1035d7bf2144799888c935048a5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactOnce: 0
+  _disableOnPlayerNearby: 1
+  _disableOnPlayerLeft: 0
   _playerNearby:
     m_PersistentCalls:
       m_Calls:
@@ -139,4 +142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _doors: []
   _waves: []
-  _encounterDelay: 0.5
+  _encounterDelay: 0
+  _encounterFinished:
+    m_PersistentCalls:
+      m_Calls: []

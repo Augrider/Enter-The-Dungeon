@@ -6,13 +6,30 @@ namespace Game.Units.Components
 {
     public class RigidbodyMovementComponent : UnitComponent
     {
-        [SerializeField] private UnityEvent<Vector3> _speedChanged;
+        // [SerializeField] private UnityEvent<Vector3> _speedChanged;
 
         [SerializeField] private Rigidbody _rigidbody;
         [SerializeField] private float _rotationSpeed;
 
         private Vector3 _targetDirection;
         private Coroutine _turnProcess;
+
+        // private Vector3
+
+
+        public void SetPaused()
+        {
+            _rigidbody.isKinematic = true;
+
+            StopAllCoroutines();
+            _turnProcess = null;
+        }
+
+        public void SetResumed()
+        {
+            _rigidbody.isKinematic = false;
+            // RotateTowards(_targetDirection);
+        }
 
 
         public void SetSpeed(Vector3 value)

@@ -371,6 +371,7 @@ GameObject:
   - component: {fileID: 6410734949573181592}
   - component: {fileID: 6410734949573181570}
   - component: {fileID: -1741712154381839607}
+  - component: {fileID: 2596364678252650636}
   m_Layer: 7
   m_Name: Enemy_ShooterL
   m_TagString: Untagged
@@ -392,6 +393,7 @@ Transform:
   - {fileID: 6410734950596179664}
   - {fileID: 6410734950525560683}
   - {fileID: 6410734950204083940}
+  - {fileID: 5459829165808008168}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -490,6 +492,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _unit: {fileID: 6410734949573181574}
   _immunityCooldown: 0
+  UnitSpawned:
+    m_PersistentCalls:
+      m_Calls: []
   HealthChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -516,6 +521,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3206400652217190622}
+        m_TargetAssemblyTypeName: Game.State.Components.OnEnemyKilledComponent, Game.State.Components
+        m_MethodName: OnKilled
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -548,6 +565,50 @@ MonoBehaviour:
   _items:
     _items: []
   _offsetRange: 0
+--- !u!114 &2596364678252650636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6410734949573181594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a801c1cb30bb618439a8106832c64be5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Paused:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6410734950525560684}
+        m_TargetAssemblyTypeName: Game.Units.Components.NavMeshMovementComponent,
+          Game.Units.Components
+        m_MethodName: SetPaused
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  Resumed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6410734950525560684}
+        m_TargetAssemblyTypeName: Game.Units.Components.NavMeshMovementComponent,
+          Game.Units.Components
+        m_MethodName: SetResumed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6410734950204083941
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,17 +656,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lineOfSight: {fileID: 6410734950525560685}
-  _playerCloseRange: 0
-  _playerFarRange: 0
+  _playerCloseRange: 5
+  _playerFarRange: 7
   ObjectEnabled:
     m_PersistentCalls:
       m_Calls: []
   ObjectDisabled:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8967803398508092271}
-        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-        m_MethodName: set_enabled
+      - m_Target: {fileID: 1669962692716882528}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -615,14 +676,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _movementEvents:
+  _stateEvents:
     PlayerClose:
-      m_PersistentCalls:
-        m_Calls: []
-    PlayerFar:
-      m_PersistentCalls:
-        m_Calls: []
-    LostPlayerVisual:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 7953118639846139664}
@@ -635,8 +690,50 @@ MonoBehaviour:
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 6059490372667715030}
+          m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+          m_MethodName: set_enabled
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
             m_BoolArgument: 1
           m_CallState: 2
+    PlayerFar:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6059490372667715030}
+          m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+          m_MethodName: set_enabled
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 7953118639846139664}
+          m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+          m_MethodName: set_enabled
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+    LostPlayerVisual:
+      m_PersistentCalls:
+        m_Calls:
         - m_Target: {fileID: 1669962692716882528}
           m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_MethodName: SetActive
@@ -661,6 +758,21 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 7953118639846139664}
+          m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+          m_MethodName: set_enabled
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+    RegainedPlayerVisual:
+      m_PersistentCalls:
+        m_Calls:
         - m_Target: {fileID: 8967803398508092271}
           m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
           m_MethodName: set_enabled
@@ -673,9 +785,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-    RegainedPlayerVisual:
-      m_PersistentCalls:
-        m_Calls:
         - m_Target: {fileID: 1669962692716882528}
           m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_MethodName: SetActive
@@ -687,30 +796,6 @@ MonoBehaviour:
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 1
-          m_CallState: 2
-        - m_Target: {fileID: 6059490372667715030}
-          m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-          m_MethodName: set_enabled
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
-        - m_Target: {fileID: 7953118639846139664}
-          m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
-          m_MethodName: set_enabled
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
           m_CallState: 2
 --- !u!114 &5399377555317706246
 MonoBehaviour:
@@ -743,6 +828,7 @@ GameObject:
   - component: {fileID: 6410734950525560683}
   - component: {fileID: 6410734950525560685}
   - component: {fileID: 6410734950525560684}
+  - component: {fileID: 3206400652217190622}
   m_Layer: 7
   m_Name: Components
   m_TagString: Untagged
@@ -796,6 +882,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _navMeshAgent: {fileID: 6410734949573181593}
+--- !u!114 &3206400652217190622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6410734950525560686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82f530fcbf4665f43975417a998270ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6410734950596179665
 GameObject:
   m_ObjectHideFlags: 0
@@ -995,3 +1093,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1001 &5595405486866479415
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 6410734949573181571}
+    m_Modifications:
+    - target: {fileID: 460468975306342531, guid: 5aa16d0f3839aff409e21969e2c2ff85, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 460468975331902174, guid: 5aa16d0f3839aff409e21969e2c2ff85, type: 3}
+      propertyPath: _unit
+      value: 
+      objectReference: {fileID: 6410734949573181574}
+    - target: {fileID: 460468975331902175, guid: 5aa16d0f3839aff409e21969e2c2ff85, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 460468975331902175, guid: 5aa16d0f3839aff409e21969e2c2ff85, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 460468975331902175, guid: 5aa16d0f3839aff409e21969e2c2ff85, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 460468975331902175, guid: 5aa16d0f3839aff409e21969e2c2ff85, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792330693923711542, guid: 5aa16d0f3839aff409e21969e2c2ff85, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5792330693923711542, guid: 5aa16d0f3839aff409e21969e2c2ff85, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5aa16d0f3839aff409e21969e2c2ff85, type: 3}
+--- !u!4 &5459829165808008168 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 460468975331902175, guid: 5aa16d0f3839aff409e21969e2c2ff85, type: 3}
+  m_PrefabInstance: {fileID: 5595405486866479415}
+  m_PrefabAsset: {fileID: 0}

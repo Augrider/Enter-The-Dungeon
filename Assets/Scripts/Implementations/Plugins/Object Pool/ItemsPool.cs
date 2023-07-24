@@ -8,6 +8,8 @@ namespace Game.Plugins.ObjectPool
         {
             result.ID = ItemDatabase.GetID(result);
             result.DefaultParent = transform;
+
+            result.enabled = true;
         }
     }
 }

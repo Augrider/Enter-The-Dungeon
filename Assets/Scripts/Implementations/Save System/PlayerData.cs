@@ -16,5 +16,6 @@ namespace Game.SaveSystem
 
         public int[] Items;
         public WeaponData[] WeaponData;
+        public int EnemiesKilled;
     }
 }

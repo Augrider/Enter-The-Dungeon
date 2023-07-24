@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 182925691157348486}
   - component: {fileID: 182925691157348508}
   - component: {fileID: 3374128225694989626}
+  - component: {fileID: 151371752539209558}
   m_Layer: 11
   m_Name: Chest
   m_TagString: Untagged
@@ -47,6 +48,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e0c1035d7bf2144799888c935048a5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactOnce: 1
+  _disableOnPlayerNearby: 0
+  _disableOnPlayerLeft: 0
   _playerNearby:
     m_PersistentCalls:
       m_Calls: []
@@ -70,7 +74,19 @@ MonoBehaviour:
         m_CallState: 2
   _toggleTooltip:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 151371752539209558}
+        m_TargetAssemblyTypeName: Game.UI.HUD.TooltipComponent, Game.UI.HUD
+        m_MethodName: ToggleTooltip
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &182925691157348486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,6 +169,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.4023656, y: 0.5076299, z: 1}
   m_Center: {x: 0, y: 0.24618506, z: 0}
+--- !u!114 &151371752539209558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182925691157348511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ec322e3421fa0741a7c9409fa982f6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tooltipText: Open Chest
 --- !u!1 &892626802505874017
 GameObject:
   m_ObjectHideFlags: 0

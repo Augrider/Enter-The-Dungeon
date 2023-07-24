@@ -12,6 +12,7 @@ namespace Game.Projectiles.Components
         protected void OnDisable()
         {
             SetProjectileState(ProjectileState.Destroyed);
+            TogglePause(false);
         }
 
 
@@ -34,6 +35,8 @@ namespace Game.Projectiles.Components
                     break;
             }
         }
+
+        public abstract void TogglePause(bool value);
 
 
         protected abstract void SetIdleState();
