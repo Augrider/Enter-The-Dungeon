@@ -1,8 +1,5 @@
-using System.Collections.Generic;
 using Developed.SceneManagement;
-using Game.Items.Components;
 using Game.Player;
-using Game.Plugins.ObjectPool;
 using Game.SaveSystem;
 using UnityEngine;
 
@@ -67,100 +64,88 @@ namespace Game.State.Components
         }
 
 
-        public bool IsPlayerSaved()
+        [ContextMenu("Save Game")]
+        public void Save()
+        {
+            var saveData = Export(Players.Current);
+            _saveComponent.Save(saveData);
+        }
+
+
+        public void LoadSave()
+        {
+            if (!TryLoadSave(out var saveData))
+                return;
+
+            Import(saveData);
+            GoToLevel(saveData.Level);
+        }
+
+        [ContextMenu("Load Saved Player")]
+        public void LoadPlayer()
+        {
+            if (!TryLoadSave(out var saveData))
+                return;
+
+            Import(saveData);
+        }
+
+        public void LoadPlayer(PlayerFullData playerData)
+        {
+            Players.Current.Import(playerData);
+        }
+
+
+        public bool IsSaved()
         {
             return _saveComponent.IsSaved();
         }
 
-        public void LoadPlayerState(bool loadLevel = false)
-        {
-            if (!_saveComponent.IsSaved())
-            {
-                Debug.LogWarning("No save detected, loading skipped");
-                return;
-            }
 
-            var saveData = _saveComponent.Load();
-
-            if (loadLevel)
-            {
-                GoToLevel(saveData.Level);
-                return;
-            }
-
-            ImportPlayer(Players.Current, saveData);
-        }
-
-        public void SavePlayerState()
-        {
-            if (_saveComponent.IsSaved())
-                Debug.LogWarning("Save detected, overwriting");
-
-            var playerData = Export(Players.Current);
-            _saveComponent.Save(playerData);
-        }
-
-        public void ErasePlayerSave()
+        public void EraseSave()
         {
             _saveComponent.ClearSave();
         }
 
 
 
-        private PlayerData Export(IPlayer player)
+        private bool TryLoadSave(out SaveData saveData)
         {
-            var playerData = new PlayerData();
+            saveData = new SaveData();
 
-            playerData.Level = _stateComponent.Level;
-            playerData.EnemiesKilled = _stateComponent.EnemiesKilled;
-
-            playerData.Health = player.State.Health;
-            playerData.Currency = player.Inventory.Currency;
-
-            var items = player.Inventory.GetItems();
-
-            var itemIDList = new List<int>();
-            var weaponsData = new List<WeaponData>();
-
-            foreach (var item in items)
+            if (!_saveComponent.IsSaved())
             {
-                var itemID = item.ID;
-                itemIDList.Add(itemID);
-
-                if (player.Weapons.TryGetWeapon(itemID, out var weapon))
-                {
-                    var weaponData = new WeaponData();
-
-                    weaponData.ItemID = itemID;
-                    weaponData.Ammo = weapon.State.TotalAmmo;
-
-                    weaponsData.Add(weaponData);
-                }
+                Debug.LogWarning("No save detected, loading skipped");
+                return false;
             }
 
-            playerData.Items = itemIDList.ToArray();
-            playerData.WeaponData = weaponsData.ToArray();
-
-            return playerData;
+            saveData = _saveComponent.Load();
+            return true;
         }
 
-        private void ImportPlayer(IPlayer player, PlayerData playerData)
+
+        private void Import(SaveData saveData)
         {
-            //What about current player state? Remove items? Or assume there is nothing recorded?
-            player.Inventory.Currency = playerData.Currency;
+            Players.Current.Import(saveData.Player);
 
-            _stateComponent.EnemiesKilled = playerData.EnemiesKilled;
+            _stateComponent.EnemiesKilled = saveData.EnemiesKilled;
+        }
 
-            foreach (var id in playerData.Items)
-            {
-                var item = ObjectPoolLocator.Service.GetItem(ItemDatabase.GetPrefab(id));
-                Debug.Log(item);
-                player.Inventory.PickItem(item);
-            }
+        private SaveData Export(IPlayer player)
+        {
+            var gameData = new SaveData();
 
-            foreach (var weaponData in playerData.WeaponData)
-                if (player.Weapons.TryGetWeapon(weaponData.ItemID, out var weapon))
-                    weapon.State.TotalAmmo = weaponData.Ammo;
+            gameData.Level = _stateComponent.Level;
+            gameData.EnemiesKilled = _stateComponent.EnemiesKilled;
+
+            //ID for player should be taken from somewhere
+            //Either from game state or Players system
+            //I decided to use Player to store ID, which should be accessed by other systems (no automation inside)
+            //Using ID we can get prefab and other cosmetic data (name, mini icon...) by asking database
+
+            gameData.Player = player.Export();
+
+            return gameData;
         }
     }
 }

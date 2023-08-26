@@ -2,7 +2,9 @@
     "name": "Game.Items.Components",
     "rootNamespace": "",
     "references": [
-        "GUID:876ce2c51a86fef479341b487a54f2a2"
+        "GUID:75350fe41e9b6284f9e65d5bf7db629b",
+        "GUID:876ce2c51a86fef479341b487a54f2a2",
+        "GUID:f2ecaf353f66e8149b2d0d3781bd7f61"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

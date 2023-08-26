@@ -2,12 +2,14 @@ using System.Collections;
 using Game.Player.Components;
 using UnityEngine;
 using Game.State;
+using Game.Player;
+using Game.Map.Components;
 
 namespace Game.Initialization
 {
     public class LevelInitialization : MonoBehaviour
     {
-        [SerializeField] private PlayerInput _playerInput;
+        [SerializeField] private SpawnPoint _playerSpawnPoint;
 
 
         void Start()
@@ -27,12 +29,19 @@ namespace Game.Initialization
             yield return null;
 
             //Note: First level should overwrite save too. Also, on death or new game save should be deleted first
-            GameStateLocator.Service.Control.LoadPlayerState();
-            GameStateLocator.Service.Control.SavePlayerState();
+            GameStateLocator.Service.Control.Save();
 
             yield return null;
 
-            _playerInput.enabled = true;
+            var unitPrefab = PlayerDatabase.GetUnitPrefab(Players.Current.CharacterID);
+            _playerSpawnPoint.SetPrefab(unitPrefab);
+            _playerSpawnPoint.SpawnUnit();
+
+            yield return null;
+
+            //TODO: Create player here
+            // Players.Current.InputEnabled = true;
+            GameStateLocator.Service.Control.TogglePause(false);
         }
     }
 }

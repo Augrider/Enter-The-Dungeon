@@ -17,6 +17,11 @@ namespace Game.Plugins.TimeProcesses
             throw new NotImplementedException();
         }
 
+        public ITimeProcess DoNextFrame(Action action)
+        {
+            throw new NotImplementedException();
+        }
+
         public ITimeProcess FixedUpdateWhile(Action action, Func<bool> condition, Action afterAction = null)
         {
             throw new NotImplementedException();

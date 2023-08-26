@@ -4,11 +4,19 @@ namespace Game.Plugins.ObjectPool
 {
     public sealed class ItemsPool : ObjectPool<Item>
     {
+        void Awake()
+        {
+            Item.DefaultParent = transform;
+        }
+
+        void OnDestroy()
+        {
+            Item.DefaultParent = null;
+        }
+
+
         protected override void OnNewActivated(Item result)
         {
-            result.ID = ItemDatabase.GetID(result);
-            result.DefaultParent = transform;
-
             result.enabled = true;
         }
     }

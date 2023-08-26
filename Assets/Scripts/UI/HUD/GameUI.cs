@@ -1,7 +1,4 @@
-using System;
 using Game.Player;
-using Game.Player.Components;
-using Game.State;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,8 +9,15 @@ namespace Game.UI.HUD
     /// </summary>
     public class GameUI : MonoBehaviour
     {
-        [SerializeField] private UnityEvent<IPlayer> PlayerSpawned;
-        [SerializeField] private UnityEvent<IPlayer> PlayerDied;
+        [SerializeField] private Canvas _pauseMenuCanvas;
+        [SerializeField] private Canvas _hudCanvas;
+
+        [SerializeField] private UnityEvent<IPlayer> _playerSpawned;
+        [SerializeField] private UnityEvent<IPlayer> _playerDied;
+
+        [SerializeField] private UnityEvent<bool> _pauseToggled;
+
+        public bool PauseControlLocked { get; set; } = false;
 
 
         private void OnEnable()
@@ -29,16 +33,31 @@ namespace Game.UI.HUD
         }
 
 
-
-        private void OnPlayerSpawned(IPlayer player)
+        public void SwitchPauseMenu()
         {
-            Debug.LogWarning("Detected spawn!");
-            PlayerSpawned?.Invoke(player);
+            //Control pause menu and canvas
+            //Switch pause state
+            //Do nothing if locked somehow
+            if (PauseControlLocked)
+                return;
+
+            _hudCanvas.enabled = !_hudCanvas.enabled;
+            _pauseMenuCanvas.enabled = !_pauseMenuCanvas.enabled;
+
+            _pauseToggled?.Invoke(_pauseMenuCanvas.enabled);
         }
 
-        private void OnPlayerDied(IPlayer player)
+
+
+        private void OnPlayerSpawned()
         {
-            PlayerDied?.Invoke(player);
+            Debug.LogWarning("Detected spawn!");
+            _playerSpawned?.Invoke(Players.Current);
+        }
+
+        private void OnPlayerDied()
+        {
+            _playerDied?.Invoke(Players.Current);
         }
     }
 }

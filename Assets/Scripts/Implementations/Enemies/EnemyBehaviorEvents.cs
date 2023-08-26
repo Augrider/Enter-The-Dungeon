@@ -8,62 +8,43 @@ using UnityEngine.Events;
 
 namespace Game.Enemies.Components
 {
-    public class EnemyBehaviorEvents : MonoBehaviour
+    public sealed class EnemyBehaviorEvents : MonoBehaviour
     {
-        private enum State { Normal, Far, Close, NoVisual }
+        private enum State { InRange, Far, Close, NoVisual }
 
-        [SerializeField] protected LineOfSight _lineOfSight;
+        [SerializeField] private LineOfSight _lineOfSight;
 
         [SerializeField] private float _playerCloseRange;
         [SerializeField] private float _playerFarRange;
 
-        [SerializeField] private UnityEvent ObjectEnabled;
-        [SerializeField] private UnityEvent ObjectDisabled;
-
         [SerializeField] private EnemyStateEvents _stateEvents;
 
-        private State _currentState;
+        private State _currentState = State.NoVisual;
 
-        public bool GotPlayerVisual { get; private set; }
+        public bool GotPlayerVisual { get; private set; } = false;
 
-        private IUnit PlayerUnit => Players.Current?.Unit;
         private bool IsPlayerAlive => Players.IsCurrentAlive;
 
-        private Vector3 PlayerPosition => Players.Current.UnitState.Position;
-        private float SqrDistance => (PlayerUnit.State.Position - transform.position).sqrMagnitude;
-
-
-        private void OnEnable()
-        {
-            ObjectEnabled?.Invoke();
-        }
-
-        private void OnDisable()
-        {
-            ObjectDisabled?.Invoke();
-        }
+        private Vector3 PlayerPosition => Players.Current.Position;
+        private float SqrDistance => (PlayerPosition - transform.position).sqrMagnitude;
 
 
         void LateUpdate()
         {
-            //Scan for events
-            //Define which are useless later
-            //For too close and too far events ranges needed
-
             if (GameStateLocator.Service.Paused)
                 return;
-
-            bool visual = CheckPlayerVisual();
-            SetCurrentVisual(visual);
 
             if (!IsPlayerAlive)
                 return;
 
+            bool visual = _lineOfSight.CheckLineOfSight(PlayerPosition);
+            SetCurrentVisual(visual);
+
             switch (_currentState)
             {
-                // case State.NoVisual:
-                //     OnNoVisual();
-                //     return;
+                case State.NoVisual:
+                    OnNoVisual();
+                    return;
 
                 case State.Close:
                     OnClose();
@@ -73,77 +54,107 @@ namespace Game.Enemies.Components
                     OnFar();
                     return;
 
-                case State.Normal:
-                    OnNormal();
+                case State.InRange:
+                    OnInRange();
                     return;
             }
         }
 
 
-        private void OnNormal()
+        private void OnInRange()
         {
             if (CheckPlayerClose(_playerCloseRange))
             {
-                _stateEvents.PlayerClose?.Invoke();
-                _currentState = State.Close;
+                SetState(State.Close);
                 return;
             }
 
             if (CheckPlayerFar(_playerFarRange))
-            {
-                _stateEvents.PlayerFar?.Invoke();
-                _currentState = State.Far;
-            }
+                SetState(State.Far);
         }
 
         private void OnFar()
         {
             if (!CheckPlayerFar(_playerFarRange))
-                _currentState = State.Normal;
+                SetState(State.InRange);
         }
 
         private void OnClose()
         {
             if (!CheckPlayerClose(_playerCloseRange))
-                _currentState = State.Normal;
+                SetState(State.InRange);
         }
 
         private void OnNoVisual()
         {
-            if (GotPlayerVisual)
-                _currentState = State.Normal;
+            if (!GotPlayerVisual)
+                return;
+
+            if (CheckPlayerClose(_playerCloseRange))
+            {
+                SetState(State.Close);
+                return;
+            }
+
+            if (CheckPlayerFar(_playerFarRange))
+            {
+                SetState(State.Far);
+                return;
+            }
+
+            SetState(State.InRange);
         }
 
 
-        protected bool CheckPlayerClose(float minRange) => SqrDistance < minRange * minRange;
-        protected bool CheckPlayerFar(float maxRange) => SqrDistance > maxRange * maxRange;
-
-
-
-        private bool CheckPlayerVisual()
-        {
-            return IsPlayerAlive ? _lineOfSight.CheckLineOfSight(PlayerUnit) : false;
-        }
 
         private void SetCurrentVisual(bool visual)
         {
-            if (GotPlayerVisual != visual)
-            {
-                GotPlayerVisual = visual;
+            if (GotPlayerVisual == visual)
+                return;
 
-                if (GotPlayerVisual)
-                {
-                    _stateEvents.RegainedPlayerVisual?.Invoke();
-                    _currentState = State.Normal;
-                }
-                else
-                {
+            GotPlayerVisual = visual;
+
+            if (!GotPlayerVisual)
+                SetState(State.NoVisual);
+        }
+
+
+        private void SetState(State value)
+        {
+            if (value == _currentState)
+                return;
+
+            _currentState = value;
+
+            switch (_currentState)
+            {
+                case State.NoVisual:
                     _stateEvents.LostPlayerVisual?.Invoke();
-                    _currentState = State.NoVisual;
-                }
+                    _stateEvents.PlayerOutOfRange?.Invoke();
+                    return;
+
+                case State.Close:
+                    _stateEvents.RegainedPlayerVisual?.Invoke();
+                    _stateEvents.PlayerOutOfRange?.Invoke();
+                    _stateEvents.PlayerClose?.Invoke();
+                    return;
+
+                case State.Far:
+                    _stateEvents.RegainedPlayerVisual?.Invoke();
+                    _stateEvents.PlayerOutOfRange?.Invoke();
+                    _stateEvents.PlayerFar?.Invoke();
+                    return;
+
+                case State.InRange:
+                    _stateEvents.RegainedPlayerVisual?.Invoke();
+                    _stateEvents.PlayerInRange?.Invoke();
+                    return;
             }
         }
 
+
+        private bool CheckPlayerClose(float minRange) => SqrDistance < minRange * minRange;
+        private bool CheckPlayerFar(float maxRange) => SqrDistance > maxRange * maxRange;
 
 
         [System.Serializable]
@@ -151,6 +162,9 @@ namespace Game.Enemies.Components
         {
             public UnityEvent PlayerClose;
             public UnityEvent PlayerFar;
+
+            public UnityEvent PlayerInRange;
+            public UnityEvent PlayerOutOfRange;
 
             public UnityEvent LostPlayerVisual;
             public UnityEvent RegainedPlayerVisual;

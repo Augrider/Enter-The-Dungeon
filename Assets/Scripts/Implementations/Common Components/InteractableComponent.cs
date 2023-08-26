@@ -33,10 +33,10 @@ namespace Game.Items.Components
 
         void OnTriggerEnter(Collider other)
         {
-            if (!Enabled || !other.TryGetComponent<IPlayer>(out var component))
+            if (!Enabled || !other.TryGetComponent<IPlayer>(out var player))
                 return;
 
-            _playerNearby?.Invoke(component);
+            _playerNearby?.Invoke(player);
 
             if (_disableOnPlayerNearby)
                 enabled = false;
@@ -44,10 +44,10 @@ namespace Game.Items.Components
 
         void OnTriggerExit(Collider other)
         {
-            if (!Enabled || !other.TryGetComponent<IPlayer>(out var component))
+            if (!Enabled || !other.TryGetComponent<IPlayer>(out var player))
                 return;
 
-            _playerLeft?.Invoke(component);
+            _playerLeft?.Invoke(player);
 
             if (_disableOnPlayerLeft)
                 enabled = false;
@@ -62,18 +62,9 @@ namespace Game.Items.Components
                 enabled = false;
         }
 
-        /// <summary>
-        /// Make player use Interact from it's own interactions class
-        /// </summary>
-        public void InteractFromPlayer(IPlayer player)
-        {
-            player.Interactions.TryInteractWith(this);
-        }
-
 
         public void ToggleHighlight(bool value)
         {
-            Debug.Log($"Highlight enabled {value}");
             _toggleTooltip?.Invoke(value);
         }
     }

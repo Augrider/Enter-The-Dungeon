@@ -1,9 +1,16 @@
+using System;
+
 namespace Game.Common
 {
     public interface IDestructible
     {
+        event Action<int> HealthChanged;
+
+        int Health { get; set; }
+        int MaxHealth { get; set; }
+
         bool Immune { get; }
 
-        void DealDamage(int value);
+        void ReceiveDamage(int value);
     }
 }

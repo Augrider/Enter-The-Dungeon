@@ -1,30 +1,29 @@
 using System.Collections;
+using System.Collections.Generic;
 using Game.Units;
+using Game.Weapons;
 using UnityEngine;
 
 namespace Game.Player.Components
 {
-    //TODO: Separate Player class from Unit, make player as standalone class in order to simplify save/load between levels
-    public class Player : MonoBehaviour, IPlayer
+    //Finally, the answer is simple: when player is set, change reference to components to those of a unit
+    //Sharing interface helps a lot in this case
+
+    /// <summary>
+    /// A proxy class that stores state and stats as data while Player Unit is not spawned yet and updates it after spawn
+    /// </summary>
+    public class Player : IPlayer
     {
-        [SerializeField] private Units.Components.Unit _unit;
+        private PlayerUnit _playerUnit;
 
-        [SerializeField] private PlayerInput _playerInput;
+        private PlayerState _playerState;
+        private PlayerInventory _playerInventory;
+        private PlayerWeapons _playerWeapons;
 
-        [SerializeField] private PlayerEvents _playerEvents;
+        public bool IsUnitSet { get; private set; } = false;
+        public string CharacterID { get; private set; }
 
-        [SerializeField] private PlayerState _playerState;
-
-        [SerializeField] private PlayerInteractions _playerInteractions;
-        [SerializeField] private PlayerInventory _playerInventory;
-        [SerializeField] private PlayerWeapons _playerWeapons;
-
-        internal PlayerEvents Events => _playerEvents;
-
-        public bool InputEnabled { get => _playerInput.enabled; set => _playerInput.enabled = value; }
-
-        public IUnit Unit => _unit;
-        public IUnitState UnitState => Unit.State;
+        public Vector3 Position => IsUnitSet ? _playerUnit.Transform.Position : Vector3.zero;
 
         public PlayerStats Stats
         {
@@ -32,41 +31,108 @@ namespace Game.Player.Components
             set => State.Stats = value;
         }
 
-        public IPlayerState State => _playerState;
+        public IPlayerState State { get; private set; }
+        public IPlayerItems Inventory { get; private set; }
+        public IPlayerWeapons Weapons { get; private set; }
 
-        IPlayerEvents IPlayer.Events => _playerEvents;
-
-        public IPlayerInteractions Interactions => _playerInteractions;
-        public IPlayerItems Inventory => _playerInventory;
-        public IPlayerWeapons Weapons => _playerWeapons;
+        public IPlayerUnit PlayerUnit => _playerUnit;
 
 
-        //TODO: Set player from outside
-        //TODO: Make Interactions independent from being on player
-
-        void Awake()
+        public Player()
         {
-            Unit.State.MaxHealth = Stats.MaxHealth;
-            Unit.State.Health = Stats.MaxHealth;
-        }
+            _playerState = new PlayerState(this);
+            _playerInventory = new PlayerInventory(this);
+            _playerWeapons = new PlayerWeapons(this);
 
-        IEnumerator Start()
-        {
-            yield return null;
-            PlayerEvents.InvokePlayerSpawned(this);
+            State = _playerState;
+            Inventory = _playerInventory;
+            Weapons = _playerWeapons;
+
+            Components.PlayerUnit.PlayerUnitSpawned += SetUnit;
         }
 
 
-        void OnEnable()
+        public void SetUnit(PlayerUnit unit)
         {
-            Players.Provide(this);
-            PlayerEvents.InvokePlayerSpawned(this);
+            Debug.LogWarning("Player Unit Set");
+
+            var data = Export();
+            _playerUnit = unit;
+
+            TogglePlayerSet(true);
+            Import(data);
+
+            PlayerEvents.InvokePlayerSpawned();
         }
 
-        void OnDisable()
+        public void ResetUnit()
         {
-            PlayerEvents.InvokePlayerDied(this);
-            Players.Provide(null);
+            Debug.LogWarning("Player Unit Reset");
+
+            var data = Export();
+            _playerUnit = null;
+
+            TogglePlayerSet(false);
+            Import(data);
+
+            PlayerEvents.InvokePlayerDied();
+        }
+
+
+        public void Import(PlayerFullData playerData)
+        {
+            CharacterID = playerData.CharacterID;
+
+            if (IsUnitSet)
+            {
+                _playerUnit.Import(playerData);
+                return;
+            }
+
+            _playerState.SetDefaultStats(PlayerDatabase.GetDefaultStats(CharacterID));
+            ImportState(playerData.State);
+        }
+
+        public PlayerFullData Export()
+        {
+            if (IsUnitSet)
+                return _playerUnit.Export();
+
+            return new PlayerFullData(CharacterID, ExportState());
+        }
+
+
+        public void ImportState(PlayerStateData data)
+        {
+            State.Health = data.Health;
+            State.Currency = data.Currency;
+
+            _playerInventory.Import(data);
+            _playerWeapons.Import(data);
+        }
+
+        public PlayerStateData ExportState()
+        {
+            var playerData = new PlayerStateData();
+
+            playerData.Health = State.Health;
+            playerData.Currency = State.Currency;
+
+            playerData.Items = _playerInventory.Export();
+            playerData.WeaponData = _playerWeapons.Export();
+
+            return playerData;
+        }
+
+
+
+        private void TogglePlayerSet(bool value)
+        {
+            IsUnitSet = value;
+
+            State = IsUnitSet ? PlayerUnit.State : _playerState;
+            Inventory = IsUnitSet ? PlayerUnit.Inventory : _playerInventory;
+            Weapons = IsUnitSet ? PlayerUnit.Weapons : _playerWeapons;
         }
     }
 }

@@ -9,14 +9,14 @@ namespace Game.Map.Components
     {
         public void ToNextLevel()
         {
-            if (GameStateLocator.Service.Level + 1 >= GameStateLocator.Service.Control.LevelCount)
+            if (GameStateLocator.Service.Level >= GameStateLocator.Service.Control.LevelCount - 1)
             {
                 //TODO: Proper ending
-                PlayerEvents.InvokePlayerDied(Players.Current);
+                PlayerEvents.InvokePlayerDied();
                 return;
             }
 
-            GameStateLocator.Service.Control.SavePlayerState();
+            GameStateLocator.Service.Control.Save();
             GameStateLocator.Service.Control.GoToLevel(GameStateLocator.Service.Level + 1);
         }
     }

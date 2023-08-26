@@ -74,5 +74,10 @@ namespace Game.Weapons.Components
 
             endCallback?.Invoke();
         }
+
+        public static IEnumerator Burst(IWeapon current, object burstAmount, Action endCallback)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

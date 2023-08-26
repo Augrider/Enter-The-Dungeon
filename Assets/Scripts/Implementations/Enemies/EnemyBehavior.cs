@@ -8,12 +8,19 @@ namespace Game.Enemies.Components
     //Basic component that structured on condition-action base
     public abstract class EnemyBehavior : MonoBehaviour, IEnemyBehavior
     {
-        //Check for line of sight, it also needed for some movement 
+        //TODO: Enchancements to Enemy Behaviors system in general:
+
+        //Make system resistant to object switch off (i.e. never reset shooting cooldowns)
+        //Make behaviors have none of state saved during switch offs (i.e. "ghost" bullets on respawning)
+        //Create some way to reset multi behavior state or make behaviors more standalone (i.e. shooting bursts with cooldown in between)
+        //Fix or find solution for interconnected systems (one always enabled)
+        //Give access for events in code?
+        //Make behaviors compatible with pause?
+
         [SerializeField] private BaseEvents _baseEvents;
 
         public bool Enabled { get => enabled; set => enabled = value; }
 
-        protected IUnit PlayerUnit => Players.Current?.Unit;
         protected bool IsPlayerAlive => Players.IsCurrentAlive;
 
 

@@ -7,25 +7,24 @@ namespace Game.SaveSystem
         [SerializeField] private string fileName;
 
 
-        [ContextMenu("Save player")]
-        public void Save(PlayerData playerData)
+        // [ContextMenu("Save player")]
+        public void Save(SaveData playerData)
         {
             var dataString = JsonUtility.ToJson(playerData);
             Debug.Log(dataString);
 
             System.IO.File.WriteAllText(GetFilePath(fileName), dataString);
-            Debug.Log(System.IO.File.Exists(GetFilePath(fileName)));
         }
 
         [ContextMenu("Load player")]
-        public PlayerData Load()
+        public SaveData Load()
         {
             if (!IsSaved())
-                return new PlayerData();
+                return new SaveData();
 
             var dataString = System.IO.File.ReadAllText(GetFilePath(fileName));
             Debug.Log(dataString);
-            var playerData = JsonUtility.FromJson<PlayerData>(dataString);
+            var playerData = JsonUtility.FromJson<SaveData>(dataString);
 
             return playerData;
         }

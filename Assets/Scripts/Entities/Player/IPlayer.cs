@@ -1,22 +1,22 @@
 using Game.Units;
+using UnityEngine;
 
 namespace Game.Player
 {
     public interface IPlayer
     {
-        bool InputEnabled { get; set; }
+        string CharacterID { get; }
 
-        //Add references to Stats and State
-        IUnit Unit { get; }
-        IUnitState UnitState { get; }
-
-        IPlayerEvents Events { get; }
+        //Add position if needed, better compromise
+        Vector3 Position { get; }
 
         PlayerStats Stats { get; set; }
         IPlayerState State { get; }
 
-        IPlayerInteractions Interactions { get; }
         IPlayerItems Inventory { get; }
         IPlayerWeapons Weapons { get; }
+
+        void Import(PlayerFullData playerData);
+        PlayerFullData Export();
     }
 }

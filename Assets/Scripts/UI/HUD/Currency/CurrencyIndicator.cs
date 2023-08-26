@@ -1,4 +1,5 @@
 using Game.Player;
+using Game.Player.Components;
 using TMPro;
 using UnityEngine;
 
@@ -14,10 +15,10 @@ namespace Game.UI.HUD
 
         void OnEnable()
         {
-            Debug.Log($"Money {Players.Current.Inventory.Currency}");
-            Player.Events.InventoryChanged += OnInventoryChanged;
+            Debug.Log($"Money {Players.Current.State.Currency}");
+            PlayerEvents.InventoryChanged += OnInventoryChanged;
 
-            _current = Player.Inventory.Currency;
+            _current = Player.State.Currency;
             OnInventoryChanged();
         }
 
@@ -33,7 +34,7 @@ namespace Game.UI.HUD
             // if (_current == Players.Current.Inventory.Currency)
             //     return;
 
-            _current = Players.Current.Inventory.Currency;
+            _current = Players.Current.State.Currency;
 
             var healthText = string.Format(_currencyText, $"{_current}");
             _currencyTextObject.SetText(healthText);

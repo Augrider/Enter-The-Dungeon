@@ -1,12 +1,15 @@
+using Game.Common;
+
 namespace Game.Units
 {
     public interface IUnit
     {
         /// <summary>
-        /// This event is fired when state of the unit is changed (excluding position and rotation)
+        /// Positional aspect of unit
         /// </summary>
-        event System.Action StateChanged;
+        ITransformComponent Transform { get; }
+        IDestructible Destructible { get; }
 
-        IUnitState State { get; }
+        // IUnitState State { get; }
     }
 }

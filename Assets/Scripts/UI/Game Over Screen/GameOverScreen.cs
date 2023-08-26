@@ -19,7 +19,7 @@ namespace Game.UI.GameOverScreen
             _enemiesKilledText.SetText(GameStateLocator.Service.EnemiesKilled.ToString());
             _levelReachedText.SetText((GameStateLocator.Service.Level + 1).ToString());
 
-            GameStateLocator.Service.Control.ErasePlayerSave();
+            GameStateLocator.Service.Control.EraseSave();
         }
 
 

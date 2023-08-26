@@ -14,7 +14,7 @@ namespace Game.UI.HUD
 
         void OnEnable()
         {
-            Player.Events.HealthChanged += OnHealthChanged;
+            PlayerEvents.HealthChanged += OnHealthChanged;
             OnHealthChanged(Player.State.Health);
         }
 

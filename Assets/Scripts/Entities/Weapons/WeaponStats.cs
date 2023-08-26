@@ -9,6 +9,8 @@ namespace Game.Weapons
 
         [Min(0.01f)]
         public float RateOfFire;
+        [Min(1)]
+        public int BurstAmount;
 
         [Min(0)]
         public float ReloadCooldown;
@@ -22,7 +24,6 @@ namespace Game.Weapons
         public bool InfiniteAmmo;
         [Min(1)]
         public int MaxAmmo;
-
 
         public static WeaponStats operator +(WeaponStats a, WeaponStats b)
         {

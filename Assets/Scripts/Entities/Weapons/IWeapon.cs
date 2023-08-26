@@ -2,11 +2,11 @@ namespace Game.Weapons
 {
     public interface IWeapon
     {
-        IWeaponState State { get; }
-        WeaponStats Stats { get; }
+        string ID { get; }
 
-        void ToggleVisual(bool value);
-        //Add callback function? Or just cooldowns to switching?
+        WeaponStats Stats { get; }
+        IWeaponState State { get; }
+
         void PullOut();
         void Hide();
 

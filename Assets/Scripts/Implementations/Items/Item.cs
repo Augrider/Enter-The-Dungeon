@@ -5,8 +5,11 @@ using UnityEngine.Events;
 
 namespace Game.Items.Components
 {
+    //TODO: Inherit from Interactable? Or inherit only some features
     public abstract class Item : MonoBehaviour, IItem, IInteractable
     {
+        [SerializeField] private IDComponent _id;
+
         [SerializeField] private ItemData _data;
 
         [Header("Item physics components")]
@@ -15,22 +18,18 @@ namespace Game.Items.Components
         [SerializeField] private Collider _collider;
 
         [Space]
-        [SerializeField] private UnityEvent<bool> HighlightToggled;
+        [SerializeField] private UnityEvent<bool> _highlightToggled;
+        [SerializeField] private UnityEvent<bool> _visualsToggled;
 
-        public Transform DefaultParent { get; set; }
+        public static Transform DefaultParent { get; set; }
 
-        public int ID { get; set; }
+        public string ID { get => _id.Value; }
 
         public ItemData Data => _data;
 
         public bool Enabled { get => enabled; set => enabled = value; }
         public Vector3 Position => transform.position;
 
-
-        public void ToggleHighlight(bool value)
-        {
-            HighlightToggled?.Invoke(value);
-        }
 
         public virtual void Interact(IPlayer player)
         {
@@ -55,11 +54,23 @@ namespace Game.Items.Components
             transform.rotation = rotation;
         }
 
+
+        public void ToggleHighlight(bool value)
+        {
+            _highlightToggled?.Invoke(value);
+        }
+
         public void TogglePhysics(bool value)
         {
             _rigidbody.isKinematic = !value;
             _collider.enabled = value;
         }
+
+        public void ToggleVisual(bool value)
+        {
+            _visualsToggled?.Invoke(value);
+        }
+
 
         /// <summary>
         /// Removes item instance from game
@@ -82,6 +93,9 @@ namespace Game.Items.Components
         {
             //Common logic
             enabled = true;
+            ToggleVisual(true);
+            TogglePhysics(true);
+
             OnItemDropped(player);
         }
 
@@ -90,22 +104,31 @@ namespace Game.Items.Components
         protected abstract void OnItemDropped(IPlayer player);
 
 
-        public override bool Equals(object other)
-        {
-            if (!(other is Item item))
-                return false;
+        // public override bool Equals(object other)
+        // {
+        //     if (other == null)
+        //         return false;
 
-            return item.Data == this.Data;
-        }
+        //     if (!(other is Item item))
+        //         return false;
 
-        public static bool operator ==(Item a, Item b)
-        {
-            return a.Data == b.Data;
-        }
+        //     return this.Data.Equals(item.Data);
+        // }
 
-        public static bool operator !=(Item a, Item b)
-        {
-            return a.Data != b.Data;
-        }
+        // public static bool operator ==(Item a, Item b)
+        // {
+        //     if (object.ReferenceEquals(a, null))
+        //         return object.ReferenceEquals(b, null);
+
+        //     return a.Equals(b);
+        // }
+
+        // public static bool operator !=(Item a, Item b)
+        // {
+        //     if (object.ReferenceEquals(a, null))
+        //         return !object.ReferenceEquals(b, null);
+
+        //     return !a.Equals(b);
+        // }
     }
 }

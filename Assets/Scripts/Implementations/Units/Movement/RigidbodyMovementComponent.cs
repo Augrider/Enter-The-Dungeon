@@ -1,56 +1,52 @@
 using System.Collections;
+using Game.Common;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Game.Units.Components
 {
-    public class RigidbodyMovementComponent : UnitComponent
+    public class RigidbodyMovementComponent : MonoBehaviour
     {
-        // [SerializeField] private UnityEvent<Vector3> _speedChanged;
-
+        [SerializeField] private TransformComponent _transform;
         [SerializeField] private Rigidbody _rigidbody;
-        [SerializeField] private float _rotationSpeed;
 
         private Vector3 _targetDirection;
         private Coroutine _turnProcess;
 
-        // private Vector3
+
+        // public void SetPaused()
+        // {
+        //     _rigidbody.isKinematic = true;
+
+        //     StopAllCoroutines();
+        //     _turnProcess = null;
+        // }
+
+        // public void SetResumed()
+        // {
+        //     _rigidbody.isKinematic = false;
+        //     // RotateTowards(_targetDirection);
+        // }
 
 
-        public void SetPaused()
-        {
-            _rigidbody.isKinematic = true;
-
-            StopAllCoroutines();
-            _turnProcess = null;
-        }
-
-        public void SetResumed()
-        {
-            _rigidbody.isKinematic = false;
-            // RotateTowards(_targetDirection);
-        }
-
-
-        public void SetSpeed(Vector3 value)
+        public void SetAcceleration(Vector3 value)
         {
             _rigidbody.AddForce(value, ForceMode.Acceleration);
         }
 
-        public void RotateTowards(Vector3 value)
+        public void RotateTowards(Vector3 value, float rotationSpeed)
         {
-            _targetDirection = (value - Unit.State.Position).normalized;
+            _targetDirection = (value - _transform.Position).normalized;
 
             if (_turnProcess == null)
-                _turnProcess = StartCoroutine(TurnProcess());
+                _turnProcess = StartCoroutine(TurnProcess(rotationSpeed));
         }
 
 
-        private IEnumerator TurnProcess()
+        private IEnumerator TurnProcess(float rotationSpeed)
         {
-            while (_targetDirection != Unit.State.Direction)
+            while (_targetDirection != _transform.Direction)
             {
-                StepRotateTowards(_targetDirection, Time.deltaTime);
+                StepRotateTowards(_targetDirection, rotationSpeed, Time.deltaTime);
                 yield return null;
             }
 
@@ -59,15 +55,10 @@ namespace Game.Units.Components
 
         //Note: we can just set rotation instead, since it's shooter and this component is for player
         //But having just fast rotation speed gives a bit of weight to movement
-        private void StepRotateTowards(Vector3 direction, float deltaTime)
+        private void StepRotateTowards(Vector3 direction, float rotationSpeed, float deltaTime)
         {
-            var direction2d = direction;
-            direction2d.y = 0;
-
-            var currentRotation = Unit.State.Rotation;
-            var targetRotation = Quaternion.LookRotation(direction2d, Vector3.up);
-
-            Unit.State.Rotation = Quaternion.Lerp(currentRotation, targetRotation, _rotationSpeed * deltaTime);
+            var targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+            _transform.Rotation = Quaternion.Lerp(_transform.Rotation, targetRotation, rotationSpeed * deltaTime);
         }
     }
 }

@@ -3,11 +3,19 @@ using UnityEngine;
 
 namespace Game.Player.Components
 {
-    public abstract class PlayerComponent : MonoBehaviour
+    public abstract class PlayerComponent
     {
-        [SerializeField] private Player _player;
+        public Player Player { get; internal set; }
 
-        public Player Player => _player;
-        public IUnit Unit => _player.Unit;
+
+        public PlayerComponent(Player player)
+        {
+            SetPlayer(player);
+        }
+
+        internal void SetPlayer(Player player)
+        {
+            Player = player;
+        }
     }
 }

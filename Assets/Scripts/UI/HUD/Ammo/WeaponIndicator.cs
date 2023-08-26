@@ -11,35 +11,28 @@ namespace Game.UI.HUD
         [SerializeField] private TextMeshProUGUI _weaponTextObject;
         [Multiline, SerializeField] private string _weaponText;
 
-        private IWeapon CurrentWeapon => Players.Current.Weapons.Current;
+        private IWeapon CurrentWeapon => Player.Weapons.Current;
 
 
         void OnEnable()
         {
-            Player.Events.InventoryChanged += OnWeaponStateChanged;
-
-            Player.Events.WeaponFired += OnWeaponStateChanged;
-            Player.Events.WeaponSwitched += OnWeaponStateChanged;
-
-            Player.Events.WeaponReloaded += OnWeaponReloading;
+            PlayerEvents.WeaponsChanged += OnWeaponStateChanged;
+            PlayerEvents.WeaponStartedReloading += OnWeaponReloading;
 
             OnWeaponStateChanged();
         }
 
-        // void OnDisable()
-        // {
-        //     Player.Events.InventoryChanged -= OnWeaponStateChanged;
-
-        //     Player.Events.WeaponFired -= OnWeaponStateChanged;
-        //     Player.Events.WeaponSwitched -= OnWeaponStateChanged;
-
-        //     Player.Events.WeaponReloaded -= OnWeaponReloading;
-        // }
+        void OnDisable()
+        {
+            PlayerEvents.WeaponsChanged -= OnWeaponStateChanged;
+            PlayerEvents.WeaponStartedReloading -= OnWeaponReloading;
+        }
 
 
 
         private void OnWeaponStateChanged()
         {
+            Debug.Log($"Showing update for {CurrentWeapon}");
             var ammoText = string.Format(_weaponText, "∞");
 
             if (CurrentWeapon == null)

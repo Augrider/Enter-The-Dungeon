@@ -6,7 +6,6 @@ namespace Game.Plugins.ObjectPool
     {
         protected override void OnNewActivated(Unit result)
         {
-            result.State.Health = result.State.MaxHealth;
         }
     }
 }

@@ -35,11 +35,12 @@ namespace Game.Map.Components
 
         public void Interact(IPlayer player)
         {
-            if (player.Inventory.Currency < _price)
+            if (player.State.Currency < _price)
                 return;
 
-            player.Inventory.Currency -= _price;
-            player.Interactions.TryInteractWith(_current);
+            player.State.Currency -= _price;
+            _current.Interact(player);
+            // player.Interactions.TryInteractWith(_current);
 
             _current = null;
             ItemPlaced = false;

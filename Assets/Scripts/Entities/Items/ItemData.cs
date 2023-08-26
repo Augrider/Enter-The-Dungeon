@@ -9,14 +9,14 @@ namespace Game.Items
         public ItemType ItemType;
 
 
-        public static bool operator ==(ItemData a, ItemData b)
-        {
-            return a.Name.Equals(b.Name, System.StringComparison.Ordinal) && a.ItemSlot == b.ItemSlot && a.ItemType == b.ItemType;
-        }
+        // public static bool operator ==(ItemData a, ItemData b)
+        // {
+        //     return a.Name.Equals(b.Name, System.StringComparison.Ordinal) && a.ItemSlot == b.ItemSlot && a.ItemType == b.ItemType;
+        // }
 
-        public static bool operator !=(ItemData a, ItemData b)
-        {
-            return !a.Name.Equals(b.Name, System.StringComparison.Ordinal) || a.ItemSlot != b.ItemSlot || a.ItemType != b.ItemType;
-        }
+        // public static bool operator !=(ItemData a, ItemData b)
+        // {
+        //     return !a.Name.Equals(b.Name, System.StringComparison.Ordinal) || a.ItemSlot != b.ItemSlot || a.ItemType != b.ItemType;
+        // }
     }
 }

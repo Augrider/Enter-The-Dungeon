@@ -26,7 +26,8 @@ namespace Game.Enemies.Components
         /// <returns>True if no obstacles on the line of sight</returns>
         public bool CheckLineOfSight(IUnit targetUnit)
         {
-            return CheckLineOfSight(targetUnit.State.Position);
+            // return CheckLineOfSight(targetUnit.State.Position);
+            return false;
         }
 
 

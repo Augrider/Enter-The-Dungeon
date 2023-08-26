@@ -5,18 +5,22 @@ namespace Game.Items
 {
     public interface IItem
     {
-        int ID { get; }
+        string ID { get; }
         ItemData Data { get; }
 
+        /// <summary>
+        /// Set item position and rotation, reset parent to standard
+        /// </summary>
         void SetPosition(Vector3 position, Quaternion rotation);
+        /// <summary>
+        /// Set item position, rotation and parent
+        /// </summary>
         void SetPosition(Transform parent, Vector3 position, Quaternion rotation);
+
         // void ToggleVisual(bool value);
         void Destroy();
 
         void OnItemPicked(IPlayer player);
         void OnItemDropped(IPlayer player);
-
-        //TODO: Later inventory specific components can be added to units (if enemies can do something with them)
-        //Otherwise it's okay to work only with players for now
     }
 }

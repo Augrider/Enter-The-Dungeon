@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 5600565486514899926}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6838727974338875377}
   m_RootOrder: 0
@@ -256,6 +256,10 @@ GameObject:
   - component: {fileID: 6838727975870718137}
   - component: {fileID: 2713783987420801094}
   - component: {fileID: 6838727975870718142}
+  - component: {fileID: 7429491404932644358}
+  - component: {fileID: 2960437068564871292}
+  - component: {fileID: 7471383803881508286}
+  - component: {fileID: 4130868971166829375}
   m_Layer: 10
   m_Name: Weapon_Handgun
   m_TagString: Untagged
@@ -292,6 +296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 304ac772bb987ad448bcdda99c8fac2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _id: {fileID: 7429491404932644358}
   _launcher: {fileID: 219861379999912045}
   _weaponVisuals: {fileID: 6838727975870718142}
   _weaponState: {fileID: 6838727976116708077}
@@ -354,6 +359,73 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _visuals: {fileID: 6838727974338875379}
+--- !u!114 &7429491404932644358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6838727975870718136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62fe5acb2bf968547aba7b1a01df392a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ID: 
+--- !u!114 &2960437068564871292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6838727975870718136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a40851616e25104ea03c5689f99de27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: {fileID: 7429491404932644358}
+  _data:
+    Name: Handgun
+    ItemSlot: 1
+    ItemType: 1
+  _rigidbody: {fileID: 7471383803881508286}
+  _collider: {fileID: 4130868971166829375}
+  _highlightToggled:
+    m_PersistentCalls:
+      m_Calls: []
+  _visualsToggled:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!54 &7471383803881508286
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6838727975870718136}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &4130868971166829375
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6838727975870718136}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.30492458, y: 0.5349926, z: 0.8251817}
+  m_Center: {x: 0, y: 0.30404335, z: 0.30094886}
 --- !u!1 &6838727976116708076
 GameObject:
   m_ObjectHideFlags: 0
@@ -400,6 +472,7 @@ MonoBehaviour:
   _stats:
     FireMode: 2
     RateOfFire: 2
+    BurstAmount: 0
     ReloadCooldown: 0.7
     InfiniteMag: 0
     MagSize: 7

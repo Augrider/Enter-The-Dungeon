@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace Game.Items.Components
 {
     //TODO: Make database actually read items from XML file
@@ -16,8 +12,6 @@ namespace Game.Items.Components
         }
 
 
-        // public static int IndexOf(IItem item) => _database.IndexOf(item);
-        public static int GetID(Item item) => _database.IndexOf(item);
-        public static Item GetPrefab(int index) => _database.GetPrefab(index);
+        public static Item GetPrefab(string id) => _database.GetPrefab(id);
     }
 }

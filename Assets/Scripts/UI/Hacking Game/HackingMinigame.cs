@@ -1,9 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
-using Game.Player;
+using System;
 using Game.Plugins.TimeProcesses;
+using Game.State;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Game.Hacking
@@ -23,9 +24,13 @@ namespace Game.Hacking
         [SerializeField] private Color colorCorrect;
         [SerializeField] private Color colorIncorrect;
 
+        [SerializeField] private int maxTries;
+
+        [SerializeField] private UnityEvent _gameStarted;
+        [SerializeField] private UnityEvent _gameFinished;
+
         private HackingComponent _current;
 
-        [SerializeField] private int maxTries;
         private int currentTry;
 
         private int[] currentSequence = new int[4] { 0, 1, 2, 3 };
@@ -64,7 +69,9 @@ namespace Game.Hacking
 
             GenerateSequence();
 
-            Players.Current.InputEnabled = false;
+            GameStateLocator.Service.Control.TogglePause(true);
+            _gameStarted?.Invoke();
+
             _gameCanvas.enabled = true;
             inputAllowed = false;
 
@@ -75,8 +82,8 @@ namespace Game.Hacking
         private void OnGameFinished()
         {
             _gameCanvas.enabled = false;
-            Players.Current.InputEnabled = true;
-            //Enable player input
+            GameStateLocator.Service.Control.TogglePause(false);
+            _gameFinished?.Invoke();
 
             _current.SetSuccess();
             _current = null;
@@ -85,8 +92,8 @@ namespace Game.Hacking
         private void OnGameFailed()
         {
             _gameCanvas.enabled = false;
-            Players.Current.InputEnabled = true;
-            //Enable player input
+            GameStateLocator.Service.Control.TogglePause(false);
+            _gameFinished?.Invoke();
 
             _current.SetFailed();
             _current = null;
@@ -104,13 +111,11 @@ namespace Game.Hacking
             while (n > 1)
             {
                 // n--;
-                int k = Random.Range(0, --n);
+                int k = UnityEngine.Random.Range(0, --n);
                 int temp = currentSequence[n];
 
                 currentSequence[n] = currentSequence[k];
                 currentSequence[k] = temp;
-
-                // Debug.LogWarning($"Shuffled {n} and {k}. Array {currentSequence[0]}, {currentSequence[1]}, {currentSequence[2]}, {currentSequence[3]}");
             }
 
             Debug.Log($"Sequence: {currentSequence[0] + 1}, {currentSequence[1] + 1}, {currentSequence[2] + 1}, {currentSequence[3] + 1}");
@@ -136,7 +141,7 @@ namespace Game.Hacking
             if (currentIndex >= currentSequence.Length)
             {
                 _stateText.SetText("Success!");
-                TimeProcessLocator.Service.DoAfterDelay(OnGameFinished, stateUpdateDelay);
+                DoAfterDelay(OnGameFinished, stateUpdateDelay);
             }
         }
 
@@ -150,12 +155,12 @@ namespace Game.Hacking
             if (currentTry >= maxTries)
             {
                 _stateText.SetText("Failed!");
-                TimeProcessLocator.Service.DoAfterDelay(OnGameFailed, stateUpdateDelay);
+                DoAfterDelay(OnGameFailed, stateUpdateDelay);
             }
             else
             {
                 _stateText.SetText($"Tries left: {maxTries - currentTry}");
-                TimeProcessLocator.Service.DoAfterDelay(ResetIndex, stateUpdateDelay);
+                DoAfterDelay(ResetIndex, stateUpdateDelay);
             }
         }
 
@@ -166,6 +171,19 @@ namespace Game.Hacking
         {
             foreach (var image in buttonImages)
                 image.color = color;
+        }
+
+
+        private void DoAfterDelay(Action action, float cooldown)
+        {
+            StartCoroutine(WaitProcess(action, cooldown));
+        }
+
+        private IEnumerator WaitProcess(Action action, float cooldown)
+        {
+            yield return new WaitForSecondsRealtime(cooldown);
+
+            action.Invoke();
         }
     }
 }

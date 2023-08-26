@@ -30,6 +30,14 @@ namespace Game.Plugins.TimeProcesses.Components
         }
 
 
+        public ITimeProcess DoNextFrame(Action action)
+        {
+            var process = new DoNextFrameProcess(this, action);
+            StartProcess(process);
+
+            return process;
+        }
+
         public ITimeProcess DoAfter(Action action, Func<bool> condition)
         {
             var process = new DoAfterProcess(this, condition, action);

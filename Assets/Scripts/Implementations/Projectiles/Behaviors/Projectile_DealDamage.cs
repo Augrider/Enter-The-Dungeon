@@ -16,9 +16,11 @@ namespace Game.Projectiles.Components
             if (Projectile.ProjectileState != ProjectileState.Active)
                 return;
 
+            Debug.Log($"Projectile {this} collided with {other.gameObject}");
+
             if (other.TryGetComponent<IDestructible>(out var component) && !component.Immune)
             {
-                component.DealDamage(_damage);
+                component.ReceiveDamage(_damage);
 
                 if (!_pierce)
                     Projectile.SetProjectileState(ProjectileState.Destroyed);

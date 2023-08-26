@@ -1,24 +1,25 @@
 using UnityEngine;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using Developed.Database;
+using Game.Common;
 
 namespace Game.Items.Components
 {
-    //TODO: Change this later to XML file editor, and make database actually read items from file
-    [CreateAssetMenu(menuName = "Items/Database")]
-    public class ItemDatabaseSO : ScriptableObject
+    [CreateAssetMenu(menuName = "Database/Items")]
+    public class ItemDatabaseSO : BaseScriptableDatabase<Item>
     {
-        [SerializeField] private List<Item> _items;
-
-
-        public int IndexOf(Item item)
+        public Item GetPrefab(string id)
         {
-            return _items.IndexOf(item);
+            var record = _database.First(t => t.ID == id);
+            return record.Item;
         }
 
-        public Item GetPrefab(int index)
+
+        protected override void SetID(Item item, string value)
         {
-            return _items[index];
+            var idComponent = item.GetComponent<IDComponent>();
+            idComponent.SetID(value);
         }
     }
 }

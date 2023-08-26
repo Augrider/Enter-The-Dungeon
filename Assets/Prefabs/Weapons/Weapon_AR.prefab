@@ -284,7 +284,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 100
+      scalar: 1
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -4833,7 +4833,7 @@ Transform:
   m_GameObject: {fileID: 5280335135558265494}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6112331347446499383}
   m_RootOrder: 0
@@ -4965,6 +4965,7 @@ MonoBehaviour:
   _stats:
     FireMode: 2
     RateOfFire: 5
+    BurstAmount: 0
     ReloadCooldown: 0.8
     InfiniteMag: 0
     MagSize: 30
@@ -4988,6 +4989,7 @@ GameObject:
   - component: {fileID: 6112331347960075382}
   - component: {fileID: 6112331347960075379}
   - component: {fileID: -4683563885744431696}
+  - component: {fileID: -2920014706761367046}
   m_Layer: 10
   m_Name: Weapon_AR
   m_TagString: Untagged
@@ -5025,6 +5027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 304ac772bb987ad448bcdda99c8fac2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _id: {fileID: -2920014706761367046}
   _launcher: {fileID: 1700787661911043323}
   _weaponVisuals: {fileID: 6112331347960075379}
   _weaponState: {fileID: 6112331347678520240}
@@ -5115,27 +5118,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a40851616e25104ea03c5689f99de27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _id: {fileID: -2920014706761367046}
   _data:
     Name: AR
     ItemSlot: 1
     ItemType: 1
   _rigidbody: {fileID: 6112331347960075383}
   _collider: {fileID: 6112331347960075380}
-  HighlightToggled:
+  _highlightToggled:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: -4683563885744431696}
-        m_TargetAssemblyTypeName: Game.UI.HUD.TooltipComponent, Game.UI.HUD
-        m_MethodName: ToggleTooltip
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+  _visualsToggled:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &6112331347960075379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5162,6 +5157,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tooltipText: Pick AR
+--- !u!114 &-2920014706761367046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6112331347960075381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62fe5acb2bf968547aba7b1a01df392a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ID: 0
 --- !u!1 &6307209542387605958
 GameObject:
   m_ObjectHideFlags: 0

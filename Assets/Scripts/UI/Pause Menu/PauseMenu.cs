@@ -1,18 +1,22 @@
 using Game.State;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Game.UI.PauseMenu
 {
     public class PauseMenu : MonoBehaviour
     {
+        [SerializeField] private UnityEvent _resumeButtonPressed;
+
+
         public void Resume()
         {
-            GameStateLocator.Service.Control.TogglePause(false);
+            _resumeButtonPressed?.Invoke();
         }
 
         public void Restart()
         {
-            GameStateLocator.Service.Control.ErasePlayerSave();
+            GameStateLocator.Service.Control.EraseSave();
             GameStateLocator.Service.Control.GoToLevel(0);
         }
 

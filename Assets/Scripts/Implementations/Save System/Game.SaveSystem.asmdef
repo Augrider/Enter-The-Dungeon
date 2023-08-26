@@ -1,7 +1,9 @@
 {
     "name": "Game.SaveSystem",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:876ce2c51a86fef479341b487a54f2a2"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

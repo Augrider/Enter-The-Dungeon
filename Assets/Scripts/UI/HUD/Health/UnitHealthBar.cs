@@ -6,19 +6,20 @@ namespace Game.UI.HUD
 {
     public class UnitHealthBar : UnitComponent
     {
+        //TODO: Give Destructible reference and make it more generic
         [SerializeField] private Canvas _canvas;
         [SerializeField] private Slider _slider;
 
 
         private void OnEnable()
         {
-            Unit.StateChanged += OnUnitStateChanged;
-            OnUnitStateChanged();
+            Unit.Destructible.HealthChanged += OnUnitHealthChanged;
+            OnUnitHealthChanged(Unit.Destructible.Health);
         }
 
         private void OnDisable()
         {
-            Unit.StateChanged -= OnUnitStateChanged;
+            Unit.Destructible.HealthChanged -= OnUnitHealthChanged;
         }
 
 
@@ -29,9 +30,9 @@ namespace Game.UI.HUD
 
 
 
-        private void OnUnitStateChanged()
+        private void OnUnitHealthChanged(int health)
         {
-            _slider.SetValueWithoutNotify((float)Unit.State.Health / Unit.State.MaxHealth);
+            _slider.SetValueWithoutNotify((float)health / Unit.Destructible.MaxHealth);
         }
     }
 }

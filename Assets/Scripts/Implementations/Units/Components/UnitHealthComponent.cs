@@ -1,5 +1,6 @@
+using System;
+using System.Collections;
 using Game.Common;
-using Game.Plugins.TimeProcesses;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,60 +8,71 @@ namespace Game.Units.Components
 {
     public class UnitHealthComponent : UnitComponent, IDestructible
     {
+        [SerializeField] private int _maxHealth;
+        [SerializeField] private int _health;
         [SerializeField] private float _immunityCooldown;
 
-        [SerializeField] private UnityEvent UnitSpawned;
-        [SerializeField] private UnityEvent<int> HealthChanged;
-        [SerializeField] private UnityEvent UnitDied;
+        [SerializeField] private UnityEvent<int> _healthChanged;
 
-        private int _health;
         private bool _immune;
+
+        public event Action<int> HealthChanged;
+
+        public int Health { get => _health; set => SetHealth(value); }
+        public int MaxHealth { get => _maxHealth; set => SetMaxHealth(value); }
 
         public bool Immune => _immune;
 
 
-        void OnEnable()
+        void Awake()
         {
-            Unit.StateChanged += OnStateChanged;
-            _health = Unit.State.Health;
-
-            UnitSpawned?.Invoke();
-        }
-
-        void OnDisable()
-        {
-            Unit.StateChanged -= OnStateChanged;
+            Unit.Destructible = this;
         }
 
 
-        public void DealDamage(int value)
+        public void SetHealth(int value)
         {
-            Unit.State.Health -= value;
-            _health = Unit.State.Health;
+            if (_health == value)
+                return;
 
-            if (Unit.State.Health <= 0)
+            _health = Mathf.Clamp(value, 0, MaxHealth);
+            HealthChanged?.Invoke(_health);
+            _healthChanged?.Invoke(_health);
+
+            if (_health <= 0)
             {
-                UnitDied?.Invoke();
                 Unit.gameObject.SetActive(false);
                 return;
             }
+        }
 
-            if (_immunityCooldown > 0)
-            {
-                _immune = true;
-                TimeProcessLocator.Service.DoAfterDelay(() => _immune = false, _immunityCooldown);
-            }
+        public void SetMaxHealth(int value)
+        {
+            _maxHealth = value;
+            SetHealth(Health);
+        }
+
+
+        public void ReceiveDamage(int value)
+        {
+            if (value == 0)
+                return;
+
+            SetHealth(Health - value);
+
+            if (Health > 0 && _immunityCooldown > 0)
+                StartCoroutine(ImmunityProcess());
         }
 
 
 
-        //Health can be increased or changed by other means
-        private void OnStateChanged()
+        private IEnumerator ImmunityProcess()
         {
-            if (_health == Unit.State.Health)
-                return;
+            _immune = true;
 
-            HealthChanged?.Invoke(Unit.State.Health);
+            yield return new WaitForSeconds(_immunityCooldown);
+
+            _immune = false;
         }
     }
 }

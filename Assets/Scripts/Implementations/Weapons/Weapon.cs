@@ -1,10 +1,14 @@
+using Game.Common;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Game.Weapons.Components
 {
+    //TODO: Integrate ID from item, maybe simplify
     public class Weapon : MonoBehaviour, IWeapon
     {
+        [SerializeField] private IDComponent _id;
+
         [Header("Weapon components")]
         [Space]
         [SerializeField] private BaseLauncher _launcher;
@@ -15,15 +19,11 @@ namespace Game.Weapons.Components
         [SerializeField] private UnityEvent _shotFired;
         [SerializeField] private UnityEvent _reloadStarted;
 
+        public string ID => _id.Value;
+
         public IWeaponState State => _weaponState;
         public WeaponStats Stats => State.Stats;
 
-
-        public void ToggleVisual(bool value)
-        {
-            _weaponVisuals.ToggleEnabled(value);
-            Debug.LogWarning($"{gameObject} Visual {value}");
-        }
 
         public void PullOut()
         {
@@ -58,6 +58,14 @@ namespace Game.Weapons.Components
             //Start visuals, refill mag at the end. Should be breakable
             State.AmmoInMag = Mathf.Min(State.Stats.MagSize, State.TotalAmmo);
             _reloadStarted?.Invoke();
+        }
+
+
+
+        private void ToggleVisual(bool value)
+        {
+            _weaponVisuals.ToggleEnabled(value);
+            Debug.LogWarning($"{gameObject} Visual {value}");
         }
     }
 }

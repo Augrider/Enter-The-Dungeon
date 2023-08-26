@@ -1,3 +1,5 @@
+using Game.Player;
+
 namespace Game.State
 {
     public interface IGameStateControl
@@ -9,9 +11,24 @@ namespace Game.State
 
         void TogglePause(bool value);
 
-        void SavePlayerState();
-        void LoadPlayerState(bool loadLevel = false);
-        void ErasePlayerSave();
-        bool IsPlayerSaved();
+        void Save();
+
+        //TODO: Change controls to better work with player class permanence
+        /// <summary>
+        /// Perform full loading of player and level states
+        /// </summary>
+        void LoadSave();
+        /// <summary>
+        /// Load saved player
+        /// </summary>
+        void LoadPlayer();
+        /// <summary>
+        /// Load provided player
+        /// </summary>
+        void LoadPlayer(PlayerFullData playerData);
+
+        bool IsSaved();
+
+        void EraseSave();
     }
 }

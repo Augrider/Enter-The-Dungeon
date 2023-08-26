@@ -1,11 +1,13 @@
 using Game.Player;
 using Game.Weapons;
+using UnityEngine;
+using UnityEngine.Events;
 
 namespace Game.Items.Components
 {
     public class WeaponItem : Item
     {
-        private IWeapon _weapon;
+        [SerializeField] private IWeapon _weapon;
 
 
         void Awake()
@@ -18,6 +20,8 @@ namespace Game.Items.Components
         {
             if (player.Weapons.TryGetWeapon(ID, out var weapon))
             {
+                Debug.Log($"Same weapon {this} detected, refilling");
+
                 weapon.State.TotalAmmo = weapon.Stats.MaxAmmo;
                 Destroy();
                 return;
@@ -29,10 +33,11 @@ namespace Game.Items.Components
 
         protected override void OnItemPicked(IPlayer player)
         {
+            Debug.Log($"Picking weapon {this}");
             TogglePhysics(false);
-            _weapon.ToggleVisual(false);
+            ToggleVisual(false);
 
-            player.Weapons.AddWeapon(_weapon, ID);
+            player.Weapons.AddWeapon(_weapon);
         }
 
         protected override void OnItemDropped(IPlayer player)
@@ -40,7 +45,7 @@ namespace Game.Items.Components
             player.Weapons.RemoveWeapon(_weapon);
 
             TogglePhysics(true);
-            _weapon.ToggleVisual(true);
+            ToggleVisual(true);
         }
     }
 }

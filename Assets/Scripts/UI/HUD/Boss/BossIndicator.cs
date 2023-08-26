@@ -32,7 +32,7 @@ namespace Game.UI.HUD
             _nameTextObject.SetText(bossName);
             _current = unit;
 
-            _current.StateChanged += OnUnitStateChanged;
+            // _current.StateChanged += OnUnitStateChanged;
             OnUnitStateChanged();
 
             _canvas.enabled = true;
@@ -40,7 +40,7 @@ namespace Game.UI.HUD
 
         private void OnBossDisabled()
         {
-            _current.StateChanged -= OnUnitStateChanged;
+            // _current.StateChanged -= OnUnitStateChanged;
             _current = null;
 
             _canvas.enabled = false;
@@ -49,7 +49,7 @@ namespace Game.UI.HUD
 
         private void OnUnitStateChanged()
         {
-            _healthBar.SetValueWithoutNotify((float)_current.State.Health / _current.State.MaxHealth);
+            _healthBar.SetValueWithoutNotify((float)_current.Destructible.Health / _current.Destructible.MaxHealth);
         }
     }
 }
